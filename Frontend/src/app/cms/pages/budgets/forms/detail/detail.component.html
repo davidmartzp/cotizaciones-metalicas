@@ -1,0 +1,54 @@
+<div class="container" *ngIf="project">
+    <div class="row p-5">
+        <div class="mb-3">
+            <label for="project_name" class="form-label">Nombre del proyecto</label>
+            <input type="text" class="form-control" id="project_name" name="project_name" [(ngModel)]="project.name"
+                (input)="changeProjectData()">
+        </div>
+        <div class="mb-3 ">
+            <label for="project_date" class="form-label">Fecha de Cotización</label>
+            <input type="date" class="form-control" id="project_date" name="date" [(ngModel)]="project.date"
+                (input)="changeProjectData()" (change)="setOfferValid()">
+        </div>
+        <div class="mb-3">
+            <label for="offer_valid" class="form-label">Cotización válida hasta</label>
+            <input type="date" class="form-control" id="offer_valid" name="offer_valid"
+                [(ngModel)]="project.offer_valid" (input)="changeProjectData()">
+        </div>
+        <div class="mb-3">
+            <label for="project_manufacture_delivery_time" class="form-label">Tiempo de entrega de fabricación</label>
+            <input type="text" class="form-control" id="project_manufacture_delivery_time" name="craft_delivery_time"
+                [(ngModel)]="project.manufacture_delivery_time" (input)="changeProjectData()">
+        </div>
+        <div class="mb-3">
+            <label for="project_installation_delivery_time" class="form-label">Tiempo de Entrega de Instalación</label>
+            <input type="text" class="form-control" id="project_installation_delivery_time"
+                name="installation_delivery_time" [(ngModel)]="project.installation_delivery_time"
+                (input)="changeProjectData()">
+        </div>
+        <div class="mb-3">
+            <label for="project_warranty" class="form-label">Garantía</label>
+            <input type="text" class="form-control" id="project_warranty" name="warranty" [(ngModel)]="project.warranty"
+                (input)="changeProjectData()">
+        </div>
+        <div class="mb-3">
+            <label for="project_payment_methods_notes" class="form-label">Métodos de pago</label>
+            <div class="d-flex">
+                <label for="advance_payment_percentage" class="mr-2">Porcentaje de anticipo:</label>
+                <input type="number" class="form-control" style="width: 20%; margin-left: 5px; margin-right: 5px;"
+                    id="advance_payment_percentage" name="advance_payment_percentage"
+                    [(ngModel)]="project.advance_payment_percentage" (input)="calculatePay();changeProjectData()">
+                <label for="advance_payment_value" class="ml-2 mr-2">Valor:</label>
+                <input type="number" class="form-control" style="width: 20%; margin-left: 5px; margin-right: 5px;"
+                    id="advance_payment_value" name="advance_payment_value" [(ngModel)]="project.advance_payment_value"
+                    (input)="calculatePay(); changeProjectData(); " readonly>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="project_delivery_address" class="form-label">Dirección de entrega</label>
+            <input type="text" class="form-control" id="project_delivery_address" name="address"
+                [(ngModel)]="project.delivery_address" (input)="changeProjectData()">
+        </div>
+
+    </div>
+</div>

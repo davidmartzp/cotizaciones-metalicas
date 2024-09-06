@@ -1,0 +1,38 @@
+ {
+  "/api": {
+    "target": "http://metalicas.test",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    }
+  },
+  "/uploads": {
+    "target": "metalicas.test",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    }
+  },
+  "/cdn": {
+    "target": "https://cdn.jsdelivr.net",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/cdnjs": {
+    "target": "https://cdnjs.cloudflare.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/fonts": {
+    "target": "https://fonts.gstatic.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+ }

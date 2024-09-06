@@ -1,0 +1,59 @@
+.sidebar {
+    height: calc(100vh - 40px); /* Altura del menú lateral con margen superior e inferior más pronunciado */
+    width: 250px;
+    background-color: #222; /* Fondo negro oscuro */
+    position: fixed;
+    top: 20px; /* Margen superior aumentado */
+    left: 20px; /* Margen izquierdo */
+    padding-top: 20px;
+    padding-bottom: 60px; /* Espacio para el botón en la parte inferior */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7); /* Sombra con efecto neón oscuro */
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espacia los elementos verticalmente */
+}
+.sidebar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.sidebar .logo img {
+    width: 100px; /* Ajusta el tamaño del logo según sea necesario */
+}
+.sidebar .nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente el menú */
+}
+.sidebar .nav-link {
+    color: #ffffff;
+    padding: 10px 15px;
+    width: 100%; /* Ajusta el ancho del enlace para ocupar todo el ancho del sidebar */
+    text-align: center; /* Centra el texto dentro del enlace */
+    font-weight: 600; /* Negrita para el texto del menú */
+}
+.sidebar .nav-link.active, 
+.sidebar .nav-link:hover {
+    background-color: #495057; /* Fondo del enlace activo y en hover */
+}
+.sidebar .logout-btn {
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+}
+.sidebar .logout-btn button {
+    background-color: #dc3545; /* Color de fondo del botón */
+    border: none;
+    color: #ffffff;
+    border-radius: 50%; /* Botón redondo */
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.sidebar .logout-btn button:hover {
+    background-color: #c82333; /* Color de fondo al pasar el ratón */
+}

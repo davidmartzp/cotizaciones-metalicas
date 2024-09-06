@@ -1,0 +1,26 @@
+<div class="sidebar">
+  <div class="logo">
+    <img
+      src="https://www.metalicasmundialltda.com/wp-content/uploads/elementor/thumbs/cropped-LOGO-MM-REGISTRADO-FINAL-RGB-oxam0xwhzeegbelx1jilijh3z4bnwidxvymln61pi0.png"
+      alt="Logo">
+  </div>
+
+  <nav class="nav">
+
+    <!-- Presupuestos -->
+    <a routerLink="cotizaciones-listar" class="nav-link">Cotizaciones</a>
+    <a routerLink="productos-listar" class="nav-link">Productos</a>
+
+  </nav>
+
+
+
+  <div class="text-center">
+    <div class="logout-btn">
+      <button type="button" (click)="logout()">
+        <i class="fas fa-power-off"></i>
+      </button>
+    </div>
+    <p class="description mt-2">{{metalicasUser}}</p>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+export interface Product {
+  iva_code: string;
+  description: string;
+  product_id: string;
+  price: number;
+  price_1: number;
+  dolar_price: number;
+  unit: string;
+  apply_max_discount: boolean;
+  max_discount: string;
+  max_discount_value: number;
+  apply_other_discount: boolean;
+  other_discount: number;
+  other_discount_value: number;
+  quantity: number;
+  subtotal: number;
+  is_special: boolean;
+  category_id?: string;
+  code_iva?: string;
+  discount?: string;
+  feature_cnc?: string;
+  feature_plain?: string;
+  id?: number;
+  image?: string | null;
+  material?: string;
+  price_2?: string;
+  system_name?: string;
+  type_structure?: string;
+  unit_sale?: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+}

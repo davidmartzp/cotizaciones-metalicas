@@ -1,0 +1,26 @@
+tbody{
+    font-size: 12px;
+}
+
+tbody button{
+    font-size: 12px;
+    padding: 5px !important;
+}
+
+select {
+    width: 100%; /* Ajusta según tus necesidades */
+    padding: 10px 40px 10px 10px; /* Añade padding para espacio para la flecha */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    appearance: none; /* Elimina la flecha predeterminada en algunos navegadores */
+    background: url('http://localhost:8000/images/flecha.jpg'); /* Flecha SVG */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Ubica la flecha a la derecha */
+    background-size: 28px; /* Tamaño de la flecha */
+}
+
+/* Ajuste adicional para algunos navegadores si es necesario */
+select::-ms-expand {
+    display: none; /* Oculta la flecha en Internet Explorer y Edge */
+}

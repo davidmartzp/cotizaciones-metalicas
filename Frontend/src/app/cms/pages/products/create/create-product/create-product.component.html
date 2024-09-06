@@ -1,0 +1,134 @@
+<div class="container">
+    <div class="card p-5">
+        <div class="card-body">
+            <h5 class="card-title">Crear Producto</h5>
+            <a (click)="returnToList()" class="btn btn-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Regresar
+            </a>
+            <form #productForm="ngForm" (ngSubmit)="onSubmit(productForm)" class="row">
+                <!-- Primera Columna -->
+                <div class="col-md-6">
+                    <!-- Código IVA -->
+                    <div class="form-group">
+                        <label for="code_iva">Código IVA</label>
+                        <input type="text" id="code_iva" name="code_iva" class="form-control"
+                            [(ngModel)]="product.code_iva" required>
+                    </div>
+
+                    <!-- SELECT tipo se sistema-->
+                    <div class="form-group">
+                        <label for="category_id">Tipo de Sistema</label>
+                        <select id="category_id" name="category_id" class="form-control"
+                            [(ngModel)]="product.category_id" required>
+                            <option value="">Seleccione un tipo de sistema</option>
+                            <option value="1">FACHADAS</option>
+                            <option value="2">CORTASOLES</option>
+                            <option value="3">CIELORASOS</option>
+                            <option value="4">CARPINTERÍA METÁLICA</option>
+                        </select>
+                    </div>
+
+                    <!-- Nombre del Sistema -->
+                    <div class="form-group">
+                        <label for="system_name">Nombre del Sistema</label>
+                        <input type="text" id="system_name" name="system_name" class="form-control"
+                            [(ngModel)]="product.system_name" required>
+                    </div>
+
+                    <!-- Material (Select) -->
+                    <div class="form-group">
+                        <label for="material">Material</label>
+                        <select id="material" name="material" class="form-control" [(ngModel)]="product.material"
+                            required>
+                            <option value="">Seleccione un material</option>
+                            <option value="GALVANIZADO">GALVANIZADO</option>
+                            <option value="ALUMINIO">ALUMINIO</option>
+                            <option value="INOXIDABLE">INOXIDABLE</option>
+                            <option value="CR">CR</option>
+
+                        </select>
+                    </div>
+
+                    <!-- Calibre -->
+                    <div class="form-group">
+                        <label for="caliber">Calibre</label>
+                        <input type="number" id="caliber" name="caliber" class="form-control"
+                            [(ngModel)]="product.caliber" required>
+                    </div>
+
+                    <!-- Precio 1 -->
+                    <div class="form-group">
+                        <label for="price_1">Precio</label>
+                        <input type="number" id="price_1" name="price_1" class="form-control"
+                            [(ngModel)]="product.price_1" required>
+                    </div>
+
+                </div>
+
+                <!-- Segunda Columna -->
+                <div class="col-md-6">
+                    <!-- Features (checkboxes con valores 1 y 2) -->
+                    <div class="form-group">
+                        <label>Características</label>
+                        <div>
+                            <label>
+                                <input type="checkbox" name="cnc" [(ngModel)]="cnc" (change)="change_feature_cnc()">
+                                CNC (1)
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" name="plain" [(ngModel)]="plain" (change)="change_feature_plain()">
+                                LISO (2)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Estructura -->
+                    <div class="form-group">
+                        <label>Estructura</label>
+                        <div [hidden]="product.category_id == '3'">
+                            <label>
+                                <input type="checkbox" name="type_structure_1" [(ngModel)]="type_structure" (change)="change_type_structure()">
+                                TUBERIA 40X40C16
+                            </label>
+                        </div>
+                        <div [hidden]="product.category_id != '3'">
+                            <label>
+                                <input type="checkbox" name="angle_hanger_1" [(ngModel)]="angle_hanger" (change)="change_angle_hanger()">
+                                ANGULO DE CUELGA 20CM
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Unidad de Venta -->
+                    <div class="form-group">
+                        <label for="unit_sale">Unidad de Venta</label>
+                        <input type="text" id="unit_sale" name="unit_sale" class="form-control"
+                            [(ngModel)]="product.unit_sale" required>
+                    </div>
+
+                    <!-- Descuento -->
+                    <div class="form-group">
+                        <label for="discount">Descuento Máximo(%)</label>
+                        <input type="number" id="discount" name="discount" class="form-control" [(ngModel)]="product.discount" required max="99" maxlength="2">
+                    </div>
+
+                    <!-- Precio en Dólares -->
+                    <div class="form-group">
+                        <label for="dolar_price">Precio en Dólares</label>
+                        <input type="number" id="dolar_price" name="dolar_price" class="form-control"
+                            [(ngModel)]="product.dolar_price" required>
+                    </div>
+
+                </div>
+
+                <!-- Botón de envío en una fila separada -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary w-100" >Guardar Producto</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

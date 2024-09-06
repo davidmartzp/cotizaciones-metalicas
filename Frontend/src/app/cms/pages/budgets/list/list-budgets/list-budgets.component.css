@@ -1,0 +1,40 @@
+/* Estilo general para la tabla */
+.table {
+  font-size: 0.75rem; /* Tamaño de fuente más pequeño para la tabla */
+  margin-bottom: 0; /* Reducir el margen inferior */
+}
+
+.table th,
+.table td {
+  padding: 0.5rem; /* Reducir el padding en las celdas */
+  vertical-align: middle; /* Alinear verticalmente el contenido */
+}
+
+.table th {
+  font-weight: 500; /* Fuente más ligera para los encabezados */
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #343a40; /* Añadir una línea de separación entre filas */
+}
+
+.table td {
+  white-space: nowrap; /* Evitar que el texto se ajuste a la siguiente línea */
+}
+
+/* Alinear los botones a la derecha */
+.table .actions {
+  text-align: right; /* Alinear el contenido a la derecha */
+}
+
+/* Reducir el tamaño de los botones */
+.table .btn {
+  padding: 0.25rem 0.5rem; /* Reducir el padding de los botones */
+  font-size: 0.7rem; /* Reducir el tamaño de la fuente en los botones */
+  margin: 0.1rem; /* Reducir el margen de los botones */
+}
+
+/* Asegúrate de que los botones dentro de las celdas estén alineados a la derecha */
+.table td .btn {
+  margin-left: 0.25rem; /* Añadir un margen pequeño entre los botones */
+}

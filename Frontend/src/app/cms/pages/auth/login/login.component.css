@@ -1,0 +1,34 @@
+.centered-container {
+    background-color: #343a40;
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.login-form {
+    background-color: #212529;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+}
+.login-form .form-control {
+    background-color: #495057;
+    border: none;
+    color: #ffffff;
+}
+.login-form .form-control:focus {
+    background-color: #495057;
+    border-color: #6c757d;
+    box-shadow: none;
+}
+.login-form .btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+.login-form .btn-primary:hover {
+    background-color: #0056b3;
+}

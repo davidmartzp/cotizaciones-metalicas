@@ -1,0 +1,84 @@
+
+<div class="container mt-3"  [hidden]="currency==2">
+    <div class="row">
+        <!-- Botón para abrir modal de productos -->
+        <div class="col-12">
+            <button type="button" class="btn btn-primary w-100 addService" (click)="addNewService()">
+                <i class="fas fa-plus"></i> Agregar Servicio
+            </button>
+        </div>
+        <div class="col-12 mt-3">
+            <form>
+            <table class="table table-bordered table-dark">
+                <tbody id="service_table">
+                    <tr *ngFor="let service of services; let i = index">
+                        <td>
+                            <label class="form-label">Descripción</label>
+                            <textarea [(ngModel)]="service.description" name="service_description_{{i}}" rows="9" placeholder="Descripción de servicio"></textarea>
+                        </td>
+                        <td>
+                            <div>
+                                <label class="form-label">Unidad</label>
+                                <input type="text" class="form-control" [(ngModel)]="service.unit" name="service_unit_{{i}}" placeholder="Unidad" required>
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label mt-3">% Administración</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.adminPercentage" name="service_adminPercentage_{{i}}" placeholder="% Administración" required (input)="calculateTotalS(service)">
+                                <small>{{ calculateAdminValue(service) | currency }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label class="form-label">Precio</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.price" name="service_price_{{i}}" placeholder="Precio" required (input)="calculateTotalS(service)" >
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label mt-3">% Imprevistos</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.unforeseenPercentage" name="service_unforeseenPercentage_{{i}}" placeholder="% Imprevistos" required (input)="calculateTotalS(service)">
+                                <small>{{ calculateUnforeseenValue(service) | currency }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.quantity" name="service_quantity_{{i}}" placeholder="Cantidad" required (input)="calculateTotalS(service)">
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label mt-3">% Utilidades</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.profitPercentage" name="service_profitPercentage_{{i}}" placeholder="% Utilidades" required (input)="calculateTotalS(service)">
+                                <small>{{ calculateProfitValue(service) | currency }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label class="form-label">Subtotal</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.subtotal" name="service_subtotal_{{i}}" readonly> 
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label">IVA</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.iva" name="service_iva_{{i}}" readonly>
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label">Total</label>
+                                <input type="number" class="form-control" [(ngModel)]="service.total" name="service_total_{{i}}" readonly>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-danger btn-remove" style="width: 100%;" (click)="removeService(i)">Eliminar</button>
+                            </div>
+                        </td>
+                
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        </div>
+
+        <div class="col-12 mt-3">
+            <h5>Total de Servicios: 
+                <input type="number" value="000" id="total_services" [(ngModel)]="total_services" [ngModelOptions]="{standalone: true}" readonly
+                       class="form-control bg-dark text-white text-center w-100" style="font-size: 1.25rem; padding: 0.5rem;">
+            </h5>
+        </div>
+
+    </div>
+</div>

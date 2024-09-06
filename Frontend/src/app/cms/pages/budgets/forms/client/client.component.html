@@ -1,0 +1,32 @@
+<div class="container" *ngIf="client">
+    <div class="row p-5" >
+        <div class="mb-3">
+            <label for="client_name" class="form-label">Nombre del Cliente</label>
+            <input  type="text" class="form-control" id="client_name" name="client_name" [(ngModel)]="client.name" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_numid" class="form-label">N° de identificación</label>
+            <input  type="text" class="form-control" id="client_numid" name="client_numid" [(ngModel)]="client.numid" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_city" class="form-label">Ciudad</label>
+            <input  type="text" class="form-control" id="client_city" name="client_city" [(ngModel)]="client.city" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_company" class="form-label">Empresa del Cliente</label>
+            <input type="text" class="form-control" id="client_company" name="client_company" [(ngModel)]="client.company" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_address" class="form-label">Dirección del Cliente</label>
+            <input type="text" class="form-control" id="client_address" name="client_address" [(ngModel)]="client.address" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_phone" class="form-label">Teléfono del Cliente</label>
+            <input type="text" class="form-control" id="client_phone" name="client_phone" [(ngModel)]="client.phone" (input)="changeClientData()">
+        </div>
+        <div class="mb-3">
+            <label for="client_email" class="form-label">Email del Cliente</label>
+            <input type="email" class="form-control" id="client_email" name="client_email" [(ngModel)]="client.email" (input)="changeClientData()">
+        </div>
+    </div>
+</div>

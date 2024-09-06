@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Redirige todo el tráfico a /browser/index.html, excepto si el archivo o directorio solicitado existe
+RewriteCond %{REQUEST_URI} !^/browser/index\.html$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /browser/index.html [L]

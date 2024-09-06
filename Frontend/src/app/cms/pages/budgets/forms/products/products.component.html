@@ -1,0 +1,135 @@
+<div class="container mt-3">
+    <div class="row">
+        <!-- Botón para abrir modal de productos -->
+        <div class="col-12">
+            <button type="button" class="btn btn-primary w-100 add-new-product" data-bs-toggle="modal"
+                data-bs-target="#productModal">
+                <i class="fas fa-plus"></i> Agregar Producto
+            </button>
+        </div>
+        <div class="col-12 mt-3">
+            <table class="table table-bordered table-dark">
+                <tbody id="product_table">
+                    <tr *ngFor="let product of products; let i = index">
+
+                        <td>
+                            <div>
+                                <!--Input oculto product_id-->
+                                <input type="hidden" [(ngModel)]="product.product_id" name="product_id_{{i}}">
+                                <label class="form-label">Código IVA:</label>
+                                <input type="text" class="form-control" [(ngModel)]="product.iva_code"
+                                    name="product_iva_code_{{i}}">
+                            </div>
+
+                            <div>
+                                <label class="form-label mt-2">Descripción:</label><br>
+                                <textarea
+                                    [(ngModel)]="product.description" name="product_description_{{i}}" rows="9"
+                                    placeholder="Descripción de producto"></textarea>
+                            </div>
+
+                            <!--Image path input-->
+                            <div>
+                                <label class="form-label mt-2">Imagen:</label>
+                                <!--Input file con evento-->
+                                <input type="file" class="form-control" (change)="onFileSelected($event, product)"
+                                    name="product_image_{{i}}">
+
+                                <!--Muestra la imagen desde storage-->
+                              
+                                <div>
+                                    <button class="btn btn-sm">X</button>
+                                    <img *ngIf="product.image" [src]="product.image" class="mt-3" alt="Product Image"
+                                        style="width: 100%; height: 100px; object-fit: cover; border-radius: 15px;">
+
+                                </div>
+
+                                <input [hidden]="true" type="text" class="form-control" [(ngModel)]="product.image"
+                                    name="product_image_path_{{i}}">
+                            </div>
+
+
+
+                        </td>
+                        <td>
+
+                            <div>
+                                <label class="form-label">Precio:</label>
+                                <input type="text" class="form-control" [(ngModel)]="product.price"
+                                    (input)="calculateTotalP(product)" [readOnly]="!product.is_special">
+                            </div>
+                            <!--AQUI LÓGICA DE PRECIO-->
+
+
+                            <div class="mt-2">
+                                <label class="form-label">Unidad:</label>
+                                <input type="text" class="form-control" [readOnly]="!product.is_special"
+                                    [(ngModel)]="product.unit" name="product_unit_{{i}}">
+                            </div>
+                            <div class="mt-4" [hidden]="product.is_special">
+                                <input type="checkbox" [(ngModel)]="product.apply_max_discount"
+                                    name="product_apply_max_discount_{{i}}" (change)="applyMaxDiscount(product)">
+                                <label class="form-label">Aplicar descuento Máximo:</label>
+                                <input type="text" class="form-control" [(ngModel)]="product.max_discount"
+                                    name="product_max_discount_{{i}}" placeholder="Porcentaje de descuento" readonly>
+                                <input type="text" class="form-control" [(ngModel)]="product.max_discount_value"
+                                    name="product_max_discount_value_{{i}}" readonly>
+                            </div>
+                            <div class="mt-2">
+                                <input type="checkbox" [(ngModel)]="product.apply_other_discount"
+                                    name="product_apply_other_discount_{{i}}" (change)="applyOtherDiscount(product)">
+                                <label class="form-label">Aplicar porcentaje de
+                                    descuento:</label>
+                                <input type="number" class="form-control" [(ngModel)]="product.other_discount"
+                                    name="product_other_discount_{{i}}" (input)="calculateTotalP(product)">
+                                <input type="text" class="form-control" [(ngModel)]="product.other_discount_value"
+                                    name="product_other_discount_value_{{i}}" readonly>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label class="form-label">Cantidad:</label>
+                                <input type="number" class="form-control" [(ngModel)]="product.quantity"
+                                    name="product_quantity_{{i}}" required placeholder="Cantidad"
+                                    (input)="calculateTotalP(product)">
+                            </div>
+                            <div class="mt-2">
+                                <label class="form-label">Subtotal:</label>
+                                <input type="number" class="form-control" [(ngModel)]="product.subtotal"
+                                    name="product_subtotal_{{i}}" required readonly placeholder="Subtotal">
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-danger btn-remove" style="width: 100%;"
+                                    (click)="removeProduct(i)">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12 d-flex justify-content-end">
+            <div class="mb-3 text-end">
+                <label for="delivery_cost" class="form-label">Valor de flete</label>
+                <input type="number" class="form-control bg-dark text-white text-end" id="delivery_cost" name="delivery_cost"[(ngModel)]="delivery_cost" (input)="this.calculateTotalSupplies()" >
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-end">
+            <div class="mb-3 text-end">
+                <label for="total_iva" class="form-label">IVA (19%)</label>
+                <input type="number" class="form-control bg-dark text-white text-end" id="total_iva" name="total_iva" [(ngModel)]="total_iva" readonly>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <h5>Total de Suministros:
+                <input type="number" value="000" id="total_supplies" [(ngModel)]="total_supplies"
+                    [ngModelOptions]="{standalone: true}" readonly
+                    class="form-control bg-dark text-white text-center w-100"
+                    style="font-size: 1.25rem; padding: 0.5rem;">
+            </h5>
+        </div>
+    </div>
+</div>
+<app-modal-search (productSelected)="getProductSelected($event)"></app-modal-search>

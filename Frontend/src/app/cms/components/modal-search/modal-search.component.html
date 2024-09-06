@@ -1,0 +1,105 @@
+<!-- Modal de búsqueda y selección de productos -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Buscar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" >
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Categorías de productos</label>
+                        <select id="category" class="form-control" [(ngModel)]="selectedCategory" name="category"
+                            required>
+                            <option value="" disabled selected>Seleccionar categoría</option>
+                            <option value="1">FACHADAS</option>
+                            <option value="2">CORTASOLES</option>
+                            <option value="3">CIELORASOS</option>
+                            <option value="4">CARPINTERÍA METÁLICA</option>
+                        </select>
+                    </div>
+                    <div id="form-1" [hidden]="selectedCategory=='4'">
+                        <div class="mb-3">
+                            <label for="material" class="form-label">Material</label>
+                            <select class="form-control" id="material" name="material" [(ngModel)]="selectedMaterial"
+                                required>
+                                <option value="" disabled selected>Seleccionar material</option>
+                                <option value="ALUMINIO">ALUMINIO</option>
+                                <option value="GALVANIZADO">GALVANIZADO</option>
+                                <option value="INOXIDABLE">INOXIDABLE</option>
+                                <option value="CR">CR</option>
+                            </select>
+                        </div>
+                        <!-- Unidad de Medida -->
+                        <div class="mb-3">
+                            <label for="unit" class="form-label">Unidad de Medida</label>
+                            <select class="form-control" id="unit" name="unit" [(ngModel)]="selectedUnit" required>
+                                <option value="" disabled selected>Seleccionar unidad de medida</option>
+                                <option value="ML">ML (Metros Lineales)</option>
+                                <option value="M2">M2 (Metros Cuadrados)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cutType" class="form-label">Tipo de Corte:</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="cutTypeCnc"
+                                    [(ngModel)]="cutTypes['CNC']" name="cut_type" value="1" (change)="selectCNCType()">
+                                <label class="form-check-label" for="cutTypeCnc">CNC</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="cutTypePlain"
+                                    [(ngModel)]="cutTypes['Liso']" name="cut_type" value="2" (change)="selectPlainType()">
+                                <label class="form-check-label" for="cutTypePlain">Liso</label>
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="structure" class="form-label">Estructura:</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="structure_yes" [(ngModel)]="structure"
+                                    name="structure" value="SI" required>
+                                <label class="form-check-label" for="structure_yes">Sí</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="structure_no" [(ngModel)]="structure"
+                                    name="structure" value="NO" required>
+                                <label class="form-check-label" for="structure_no">No</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" >Buscar</button>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-secondary form-2" id="addSpecial" (click)="addSpecialProduct()" [hidden]="selectedCategory!='4'">Agregar producto
+                    de carpintería metálica</button>
+                <div class="mt-3" [hidden]="selectedCategory=='4'">
+                    <table class="table table-bordered table-dark" id="productTable">
+                        <thead [hidden]="showTableHead">
+                            <tr style="font-size: 9px;">
+                                <th>Sistema</th>
+                                <th>Código IVA</th>
+                                <th>Unidad de Medida</th>
+                                <th>Precio unitario Pesos</th>
+                                <th>Precio unitario Dólares</th>
+                                <th>Agregar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí puedes usar ngFor para mostrar los productos -->
+                            <tr *ngFor="let product of products">
+                                <td>{{ product.system_name }}</td>
+                                <td>{{ product.code_iva }}</td>
+                                <td>{{ product.unit_sale }}</td>
+                                <td>{{ product.price_1 }}</td>
+                                <td>{{ product.dolar_price }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                        (click)="addProduct(product)">Agregar</button>
+                                </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

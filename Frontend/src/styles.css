@@ -1,0 +1,228 @@
+body {
+    background-color: #212529  !important; /* Fondo oscuro */
+    color: #ffffff;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif; /* Aplicar Montserrat */
+}
+
+.main-content {
+    margin-left: 270px; /* Ajusta el margen izquierdo para el contenido principal */
+    padding-top: 20px; /* Espaciado superior */
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+
+.card {
+    background-color: #343a40; /* Fondo oscuro para las tarjetas */
+    color: #ffffff; /* Texto blanco en las tarjetas */
+    border: none;
+    border-radius: 10px;
+    position: relative;
+}
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* Negrita para el título */
+}
+.card-subtitle {
+    font-size: 1rem;
+    color: #adb5bd; /* Color de subtítulo en tono gris claro */
+}
+.table thead th {
+    background-color: #343a40; /* Fondo oscuro para el encabezado de la tabla */
+    color: #ffffff; /* Texto blanco en el encabezado de la tabla */
+    font-weight: 600; /* Negrita para el encabezado */
+}
+.table tbody tr {
+    background-color: #222; /* Fondo de las filas de la tabla */
+}
+.table tbody tr:hover {
+    background-color: #495057; /* Fondo al pasar el ratón sobre una fila */
+}
+.table tbody td {
+    color: #ffffff; /* Texto blanco en las celdas de la tabla */
+}
+.table tbody td .btn {
+    font-size: 0.75rem;
+    margin: 0 2px;
+}
+.form-compact {
+    background-color: #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+.form-compact input, 
+.form-compact select, 
+.form-compact button {
+    margin-bottom: 10px;
+}
+.form-compact label {
+    color: #ffffff; /* Etiquetas en blanco */
+}
+.add-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.modal-content {
+    background-color: #343a40; /* Fondo oscuro para los modales */
+    color: #ffffff; /* Texto blanco en los modales */
+}
+
+/* Contenedor de paginación */
+.pagination {
+    display: flex;
+    justify-content: center; /* Centra la paginación */
+    padding: 20px 0; /* Espaciado superior e inferior */
+}
+
+/* Enlace de página */
+.pagination a {
+    color: #ffffff; /* Color del texto */
+    background-color: #343a40; /* Fondo oscuro para los botones */
+    padding: 10px 15px; /* Espaciado interno */
+    margin: 0 5px; /* Espaciado entre enlaces */
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Bordes redondeados */
+    text-decoration: none; /* Quita el subrayado */
+    transition: background-color 0.3s, color 0.3s; /* Transición para efectos hover */
+}
+
+/* Estilo para el enlace activo */
+.pagination .active a {
+    background-color: #6c757d; /* Fondo oscuro para el enlace activo */
+    color: white; /* Color del texto activo */
+}
+
+/* Estilo para el enlace hover */
+.pagination a:hover {
+    background-color: #495057; /* Fondo ligeramente más claro al pasar el ratón */
+    color: #ffffff; /* Color del texto al pasar el ratón */
+}
+
+/* Estilo para los botones de anterior y siguiente usando Font Awesome */
+.pagination .previous a::before,
+.pagination .next a::after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: '\f104'; /* Código para la flecha hacia la izquierda */
+    margin-right: 5px;
+}
+
+.pagination .next a::after {
+    content: '\f105'; /* Código para la flecha hacia la derecha */
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+/* Estilo para el botón de anterior y siguiente inactivo */
+.pagination .disabled {
+    background-color: #6c757d; /* Fondo para estado inactivo */
+    color: #ffffff; /* Color del texto inactivo */
+    cursor: not-allowed; /* Cursor no permitido */
+}
+
+/* Estilo para los puntos de separación */
+.pagination .dots {
+    padding: 10px 15px; /* Espaciado interno */
+    color: #ffffff; /* Color del texto */
+}
+
+
+#product_table .form-control {
+    background-color: #212529; /* Cambia el color de fondo a lo que desees */
+    color: #fff; /* Cambia el color del texto a lo que desees */
+}
+
+#service_table .form-control {
+    background-color: #212527; /* Cambia el color de fondo a lo que desees */
+    color: #fff; /* Cambia el color del texto a lo que desees */
+}
+
+/* placeholders texto gris  */
+#product_table .form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* quitar estilos de foco */
+#service_table .form-control:focus {
+    box-shadow: none;
+}
+
+/* placeholders texto blanco */
+#service_table .form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* Para Chrome, Safari, Edge y Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Estilos adicionales para hacer los campos de formulario más compactos */
+/* Reduce la altura del input y textarea */
+.form-control {
+    height: 2rem !important; /* Ajusta la altura a tu preferencia */
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño */
+    padding: 0.25rem 0.5rem !important; /* Reduce el padding interno */
+}
+
+/* Ajustar el tamaño de los selects */
+.form-control-sm, .form-control-sm {
+    height: 2rem !important; /* Ajusta la altura según tu preferencia */
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño */
+}
+
+/* Estilo adicional para el label */
+.form-label {
+    margin-bottom: 0.25rem !important; /* Reduce el espacio debajo del label */
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño para el label */
+}
+
+/* Reducir el espaciado entre los campos del formulario */
+.form-group {
+    margin-bottom: 0.75rem !important; /* Ajusta el margen inferior para los grupos de campos */
+}
+
+/* Estilo para los botones de formulario */
+.btn {
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño para los botones */
+    padding: 0.375rem 0.75rem !important; /* Reduce el padding de los botones */
+}
+
+/* Ajuste del tamaño de los campos de fecha y hora */
+input[type="date"], input[type="time"] {
+    height: 2rem !important; /* Ajusta la altura según tu preferencia */
+}
+
+/* Estilos para radio y checkbox los recuadros mas pequeños */
+
+
+/* Ajuste del tamaño de los botones de radio y checkbox */
+.form-check-input {
+    width: 0.75rem !important; /* Ajusta el ancho del input */
+    height: 0.75rem !important; /* Ajusta la altura del input */
+}
+
+.form-check-label{
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño para el label */
+}
+
+/* ajuste tamaño nav links de los tabs */
+.nav-link {
+    font-size: 0.75rem !important; /* Tamaño de fuente más pequeño para los links */
+    color: white;
+}
+
+/* ajuste tamaño nav links de los tabs hover*/
+.nav-link:hover {
+    color: white;
+}
