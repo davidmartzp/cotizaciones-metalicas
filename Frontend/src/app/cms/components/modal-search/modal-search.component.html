@@ -79,8 +79,8 @@
                                 <th>Sistema</th>
                                 <th>Código IVA</th>
                                 <th>Unidad de Medida</th>
-                                <th>Precio unitario Pesos</th>
-                                <th>Precio unitario Dólares</th>
+                                <th *ngIf="currency==1">Precio unitario Pesos</th>
+                                <th *ngIf="currency==2">Precio unitario Dólares</th>
                                 <th>Agregar</th>
                             </tr>
                         </thead>
@@ -90,8 +90,8 @@
                                 <td>{{ product.system_name }}</td>
                                 <td>{{ product.code_iva }}</td>
                                 <td>{{ product.unit_sale }}</td>
-                                <td>{{ product.price_1 }}</td>
-                                <td>{{ product.dolar_price }}</td>
+                                <td *ngIf="currency==1">{{ product.price_1 }}</td>
+                                <td *ngIf="currency==2">{{ product.dolar_price }}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
                                         (click)="addProduct(product)">Agregar</button>

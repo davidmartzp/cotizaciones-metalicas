@@ -35,7 +35,15 @@ class Budget extends Model
         'delivery_cost',
         'observation',
         'advance_payment_percentage',
-        'advance_payment_value'
+        'advance_payment_value',
+        'suppliesIva',
+        'servicesIva',
+        'adminPercentage',
+        'adminValue',
+        'profitPercentage',
+        'profitValue',
+        'unforeseenPercentage',
+        'unforeseenValue'
         
     ];
 

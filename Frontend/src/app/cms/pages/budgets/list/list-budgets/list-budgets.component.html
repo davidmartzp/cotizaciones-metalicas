@@ -13,6 +13,16 @@
 
   <div class="card mb-4">
     <div class="card-body">
+      <div class="mb-3">
+        <label for=""Elementos a mostrar></label>
+        <select class="form-control bg-dark text-white" [(ngModel)]="itemsPerPage" (change)="calculateTotalPages()">
+          <option value="5">5 items por página</option>
+          <option value="10">10 items por página</option>
+          <option value="15">15 items por página</option>
+          <option value="20">25 items por página</option>
+          <option value="50" [selected]="true">50 items por página</option> 
+        </select>
+      </div>
       <!-- Filtro de texto -->
       <div class="mb-3">
         <input 

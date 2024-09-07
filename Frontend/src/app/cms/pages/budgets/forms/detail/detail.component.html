@@ -31,19 +31,7 @@
             <input type="text" class="form-control" id="project_warranty" name="warranty" [(ngModel)]="project.warranty"
                 (input)="changeProjectData()">
         </div>
-        <div class="mb-3">
-            <label for="project_payment_methods_notes" class="form-label">Métodos de pago</label>
-            <div class="d-flex">
-                <label for="advance_payment_percentage" class="mr-2">Porcentaje de anticipo:</label>
-                <input type="number" class="form-control" style="width: 20%; margin-left: 5px; margin-right: 5px;"
-                    id="advance_payment_percentage" name="advance_payment_percentage"
-                    [(ngModel)]="project.advance_payment_percentage" (input)="calculatePay();changeProjectData()">
-                <label for="advance_payment_value" class="ml-2 mr-2">Valor:</label>
-                <input type="number" class="form-control" style="width: 20%; margin-left: 5px; margin-right: 5px;"
-                    id="advance_payment_value" name="advance_payment_value" [(ngModel)]="project.advance_payment_value"
-                    (input)="calculatePay(); changeProjectData(); " readonly>
-            </div>
-        </div>
+
         <div class="mb-3">
             <label for="project_delivery_address" class="form-label">Dirección de entrega</label>
             <input type="text" class="form-control" id="project_delivery_address" name="address"

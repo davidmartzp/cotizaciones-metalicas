@@ -1,5 +1,5 @@
 // src/app/components/modal-search/modal-search.component.ts
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../services/products.service';
@@ -35,6 +35,13 @@ export class ModalSearchComponent {
 
   constructor(private productService: ProductsService) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes['currency']) {
+      this.currency = changes['currency'].currentValue;
+      
+    }
+  }
   onSubmit(form: any) {
     if (this.selectedCategory == "0" || this.selectedMaterial == "" || this.selectedUnit == "" || !this.cutTypes.CNC && !this.cutTypes.Liso || this.structure == "") {
       Swal.fire({

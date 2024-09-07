@@ -7,6 +7,4 @@ export interface Project {
     payment_methods_notes: string;  
     delivery_address: string;
     offer_valid: string; 
-    advance_payment_percentage: number;
-    advance_payment_value: number;
 }

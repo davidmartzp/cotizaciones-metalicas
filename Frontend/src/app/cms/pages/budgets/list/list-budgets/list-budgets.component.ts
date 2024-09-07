@@ -16,7 +16,7 @@ import { environment } from '../../../../../../environments/environment';
 export class ListBudgetsComponent implements OnInit {
   budgets: any[] = [];
   page: number = 1;
-  itemsPerPage: number = 25;
+  itemsPerPage: number = 50;
   totalPages: number = 1;
   filterText: string = ''; // Propiedad para el filtro de texto
   isProduction: boolean = environment.production;
@@ -34,10 +34,14 @@ export class ListBudgetsComponent implements OnInit {
     this.budgetService.getBudgets().subscribe(
       (budgets: any) => {
         this.budgets = budgets;
-        this.totalPages = Math.ceil(this.budgets.length / this.itemsPerPage);
+        this.calculateTotalPages
       },
       (error: any) => console.error('Error loading budgets', error)
     );
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredBudgets.length / this.itemsPerPage);
   }
 
   viewBudget(code: number): void {

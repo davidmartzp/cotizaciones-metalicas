@@ -30,13 +30,13 @@ import Swal from 'sweetalert2';
     ObservationsComponent,
     ProductsComponent,
     ServicesComponent
-],
+  ],
   templateUrl: './create-budget.component.html',
   styleUrl: './create-budget.component.css',
 })
 export class CreateBudgetComponent {
 
-  currency: number = 1 ;
+  currency: number = 1;
   total_supplies: number = 0;
   total_services: number = 0;
 
@@ -44,31 +44,56 @@ export class CreateBudgetComponent {
   sending: boolean = false;
 
 
-  client?: Client  ;
+  client?: Client;
   project: any;
   observation: any;
-  products: Product[] = []; 
+  products: Product[] = [];
   services: any[] = [];
-
-  delivery_cost: any = 0;
-  total_iva: any = 0;
 
   //Obtiene el id del usuario logueado desde localstorage
   user_id = localStorage.getItem('metalicas-id');
 
+  delivery_cost: any = 0;
+  suppliesIva: any = 0;
+  advance_payment_percentage: number = 0;
+  advance_payment_value: number = 0;
 
-  constructor(private budgetService: BudgetsService ,     private route: ActivatedRoute,
-    private router: Router  ) { }
+  AIU: any = {
+    adminPercentage: 0,
+    adminValue:  0,
+    unforeseenPercentage: 0,
+    unforeseenValue: 0,
+    profitPercentage:  0,
+    profitValue: 0
+  };
+  services_iva: any = 0;
+
+
+  constructor(private budgetService: BudgetsService, private route: ActivatedRoute,
+    private router: Router) { }
 
   calculateTotalBudget() {
+    if (typeof this.total_supplies == 'string') {
+      this.total_supplies = parseFloat(this.total_supplies);
+    }
+
+    if (typeof this.total_services == 'string') {
+      this.total_services = parseFloat(this.total_services);
+    }
+
+
     if (this.currency == 1) {
-      this.total_budget = this.total_supplies + this.total_services + this.total_iva + this.delivery_cost;
-    }else{
+      this.total_budget = this.total_supplies + this.total_services;
+    } else {
       this.total_budget = this.total_supplies + this.delivery_cost;
     }
-    
-
     this.total_budget = parseFloat(this.total_budget.toFixed(2));
+    this.calculateAdvancePayment()
+
+  }
+
+  calculateAdvancePayment() {
+    this.advance_payment_value = (this.total_budget * this.advance_payment_percentage) / 100;
   }
 
   //Recibe los eventos emitidos y recalcula 
@@ -83,7 +108,7 @@ export class CreateBudgetComponent {
   }
 
   receiveTotalIva($event: any) {
-    this.total_iva = $event;
+    this.suppliesIva = $event;
     this.calculateTotalBudget();
   }
 
@@ -92,7 +117,15 @@ export class CreateBudgetComponent {
     this.calculateTotalBudget();
   }
 
+  receiveAIU($event: any) {
+    this.AIU = $event;
+    this.calculateTotalBudget();
+  }
 
+  receiveServicesIva($event: any) {
+    this.services_iva = $event;
+    this.calculateTotalBudget();
+  }
 
   //Acciones cuando se cambia la moneda 
   changeCurrency() {
@@ -130,27 +163,27 @@ export class CreateBudgetComponent {
     // Debemos validar la existencia de algunos campos 
     //client
     if (!this.client?.name || this.client?.name == '') {
-      alert('El nombre del cliente es requerido');
+      Swal.fire('El nombre del cliente es requerido');
       this.sending = false;
       return;
     }
 
     if (!this.client?.numid || this.client?.numid == '') {
-      alert('El numero de identificación del cliente es requerido');
+      Swal.fire('El numero de identificación del cliente es requerido');
       this.sending = false;
 
       return;
     }
 
     if (!this.client?.company || this.client?.company == '') {
-      alert('La empresa del cliente es requerida');
+      Swal.fire('La empresa del cliente es requerida');
       this.sending = false;
 
       return;
     }
 
     if (!this.client?.email || this.client?.email == '') {
-      alert('El correo del cliente es requerido');
+      Swal.fire('El correo del cliente es requerido');
       this.sending = false;
 
       return;
@@ -160,7 +193,7 @@ export class CreateBudgetComponent {
     const email = this.client?.email;
     const regex = /\S+@\S+\.\S+/;
     if (!regex.test(email)) {
-      alert('El correo del cliente no tiene un formato válido');
+      Swal.fire('El correo del cliente no tiene un formato válido');
       this.sending = false;
 
       return;
@@ -168,29 +201,29 @@ export class CreateBudgetComponent {
 
     //project
     if (!this.project.name || this.project.name == '') {
-      alert('El nombre del proyecto es requerido');
+      Swal.fire('El nombre del proyecto es requerido');
       this.sending = false;
 
       return;
     }
 
     if (!this.project.date || this.project.date == '') {
-      alert('La fecha de la cotización es requerida');
+      Swal.fire('La fecha de la cotización es requerida');
       this.sending = false;
 
       return;
     }
 
     if (!this.project.offer_valid || this.project.offer_valid == '') {
-      alert('La fecha de validez de la cotización es requerida');
+      Swal.fire('La fecha de validez de la cotización es requerida');
       this.sending = false;
 
       return;
     }
-  
+
     //Tiempo de entrega de la fabricación
     if (!this.project.manufacture_delivery_time || this.project.manufacture_delivery_time == '') {
-      alert('El tiempo de entrega de la fabricación es requerido');
+      Swal.fire('El tiempo de entrega de la fabricación es requerido');
       this.sending = false;
 
       return;
@@ -198,15 +231,15 @@ export class CreateBudgetComponent {
 
     // garantía 
     if (!this.project.warranty || this.project.warranty == '') {
-      alert('La garantía es requerida');
+      Swal.fire('La garantía es requerida');
       this.sending = false;
 
       return;
     }
 
     //Validamos los campos internos de cada producto
-    if(this.products.length == 0){
-      alert('Debe agregar al menos un producto');
+    if (this.products.length == 0) {
+      Swal.fire('Debe agregar al menos un producto');
       this.sending = false;
 
       return;
@@ -217,21 +250,21 @@ export class CreateBudgetComponent {
       const product = this.products[i];
 
       if (!product.description || product.description == '') {
-        alert('La descripción del producto es requerida');
+        Swal.fire('La descripción del producto es requerida');
         this.sending = false;
 
         return;
       }
 
       if (!product.quantity || product.quantity == 0) {
-        alert('La cantidad del producto '+product.description+' es requerida');
+        Swal.fire('La cantidad del producto ' + product.description + ' es requerida');
         this.sending = false;
 
         return;
       }
 
       if (!product.price || product.price == 0) {
-        alert('El precio del producto '+product.description+' es requerido');
+        Swal.fire('El precio del producto ' + product.description + ' es requerido');
         this.sending = false;
 
         return;
@@ -241,10 +274,10 @@ export class CreateBudgetComponent {
       if (product.apply_other_discount && (!product.other_discount || product.other_discount == 0)) {
         //si producto no es especial no se valida
         if (!product.is_special) {
-          alert('Ha seleccionado aplicar otro porcentaje de descuento en uno de los productos, El porcentaje de descuento de producto es requerido, debe notificar al área comercial si el descuento que quiere aplicar es superior a: '+product.discount+'%');
-          
-        }else{
-          alert('Ha seleccionado aplicar otro porcentaje de descuento en uno de los productos, El porcentaje de descuento de producto es requerido');
+          Swal.fire('Ha seleccionado aplicar otro porcentaje de descuento en uno de los productos, El porcentaje de descuento de producto es requerido, debe notificar al área comercial si el descuento que quiere aplicar es superior a: ' + product.discount + '%');
+
+        } else {
+          Swal.fire('Ha seleccionado aplicar otro porcentaje de descuento en uno de los productos, El porcentaje de descuento de producto es requerido');
         }
         this.sending = false;
         return;
@@ -252,26 +285,26 @@ export class CreateBudgetComponent {
     }
 
     //Los servicios son opcionales , pero si vienen tambien hay que validarlos
-    if(this.services.length > 0){
+    if (this.services.length > 0) {
       for (let i = 0; i < this.services.length; i++) {
         const service = this.services[i];
 
         if (!service.description || service.description == '') {
-          alert('La descripción del servicio es requerida');
+          Swal.fire('La descripción del servicio es requerida');
           this.sending = false;
 
           return;
         }
 
         if (!service.price || service.price == 0) {
-          alert('El precio del servicio '+service.description+' es requerido');
+          Swal.fire('El precio del servicio ' + service.description + ' es requerido');
           this.sending = false;
 
           return;
         }
 
         if (!service.quantity || service.quantity == 0) {
-          alert('La cantidad del servicio '+service.description+' es requerida');
+          Swal.fire('La cantidad del servicio ' + service.description + ' es requerida');
           this.sending = false;
 
           return;
@@ -281,7 +314,17 @@ export class CreateBudgetComponent {
 
     //delivery cost dentro de project.delivery_cost
     this.project.delivery_cost = this.delivery_cost;
-
+    this.project.suppliesIva = this.suppliesIva;
+    this.project.advance_payment_percentage = this.advance_payment_percentage;
+    this.project.advance_payment_value = this.advance_payment_value;
+    this.project.servicesIva = this.services_iva;
+    this.project.adminPercentage = this.AIU.adminPercentage;
+    this.project.adminValue = this.AIU.adminValue;
+    this.project.unforeseenPercentage = this.AIU.unforeseenPercentage;
+    this.project.unforeseenValue = this.AIU.unforeseenValue;
+    this.project.profitPercentage = this.AIU.profitPercentage;
+    this.project.profitValue = this.AIU.profitValue;
+    
     let budget = {
       client: this.client,
       project: this.project,
@@ -292,7 +335,7 @@ export class CreateBudgetComponent {
       currency: this.currency,
       total_supplies: this.total_supplies,
       total_services: this.total_services,
-      user_id : this.user_id
+      user_id: this.user_id
 
     };
 
@@ -309,8 +352,8 @@ export class CreateBudgetComponent {
 
 
       //Redirecciona al editar la cotización recien creada 
-      this.router.navigate(['/cotizaciones-actualizar/'+response.budget_id]); // Navega a la lista de presupuestos o a otra página
-      
+      this.router.navigate(['/cotizaciones-actualizar/' + response.budget_id]); // Navega a la lista de presupuestos o a otra página
+
     });
   }
 

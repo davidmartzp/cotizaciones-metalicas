@@ -36,7 +36,7 @@
             <tr>
                 <td colspan="3" style="text-align: center; width: 100% ">
                     <div>
-                         <img src="{{ url('public/images/LOGO.jpg') }}" width="150px" > 
+                        <img src="{{ url('public/images/LOGO.jpg') }}" width="150px">
                     </div>
                     <div>
                         <p style="">NIT: 8002541071 Km 1.5<br> Via Cavasa Cali - Juanchito <a
@@ -88,7 +88,7 @@
                 <td colspan="2">{{ $budget->client_company }}</td>
                 <td colspan="1">Teléfono:</td>
                 <td colspan="1">{{ $budget->client_phone }}</td>
-                
+
                 <td colspan="1">Proyecto:</td>
                 <td colspan="2" style="color: red ; text-transform: uppercase;">{{ $budget->project_name }}</td>
             </tr>
@@ -124,10 +124,12 @@
                                         <p class="m-0">{{ $product->description }}</p>
                                     </td>
                                     <td style="width: 5%;">{{ $product->unit }}</td>
-                                    <td style="width: 10%;">{{ fmod($quantity = round($product->quantity, 1), 1) == 0.0 ? (int)$quantity : number_format($quantity, 1, ',', '') }}
-</td>
                                     <td style="width: 10%;">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?> {{  number_format($product->price, 0, '', '.') }}
+                                        {{ fmod($quantity = round($product->quantity, 1), 1) == 0.0 ? (int)$quantity : number_format($quantity, 1, ',', '') }}
+                                    </td>
+                                    <td style="width: 10%;">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>
+                                        {{ number_format($product->price, 0, '', '.') }}
                                         @if($product->apply_max_discount)
                                             Dto.({{ $product->max_discount }}%)
                                         @endif
@@ -135,27 +137,43 @@
                                             Dto.({{ $product->other_discount }}%)
                                         @endif
                                     </td>
-                                    <td style="width: 20%;"><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($product->subtotal, 0, '', '.') }}</td>
+                                    <td style="width: 20%;">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($product->subtotal, 0, '', '.') }}
+                                    </td>
 
 
                                     <td style="width: 20%;">
                                         @if($product->image)
-                                          <img src="{{ url('public/images/' . $product->image) }}" width="150px" alt="{{ $product->name }}">
+                                            <img src="{{ url('public/images/' . $product->image) }}"
+                                                width="150px" alt="{{ $product->name }}">
                                         @endif
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td style="width: 10%;" colspan="4"></td>
-                                    <td style="width: 10%;">IVA 19%</td>
-                                    <td style="width: 20%;"><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($product->iva, 0, '', '.') }} </td>
-                                    <td style="width: 20%;"></td>
-                                </tr>
+
                             @endforeach
+                            <tr>
+                                <td style="width: 10%;" colspan="4"></td>
+                                <td style="width: 10%;">FLETE</td>
+                                <td style="width: 20%;">
+                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->delivery_cost, 0, '', '.') }}
+                                </td>
+                                <td style="width: 20%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;" colspan="4"></td>
+                                <td style="width: 10%;">IVA 19%</td>
+                                <td style="width: 20%;">
+                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->suppliesIva, 0, '', '.') }}
+                                </td>
+                                <td style="width: 20%;"></td>
+                            </tr>
                             <tr>
                                 <td style="width: 10%; " colspan="3"></td>
                                 <td style="width: 10%; " colspan="2">VALOR SUMINISTROS</td>
-                                <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{number_format($budget->total_supplies, 0, '', '.')  }}</td>
+                                <td style="width: 20%; ">
+                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->total_supplies, 0, '', '.') }}
+                                </td>
                                 <td style="width: 20%; "></td>
                             </tr>
 
@@ -181,45 +199,60 @@
                                 @foreach($services as $service)
 
                                     <tr>
-                                        <td style="width: 5%; ">0</td>
+                                        <td style="width: 5%; ">{{ $loop->iteration + $total_products}}</td>
                                         <td style="width: 30%; ">
                                             <p class="m-0" style="font-size : 14px">{{ $service->description }}</p>
                                         </td>
                                         <td style="width: 5%; ">{{ $service->unit }}</td>
-                                    <td style="width: 10%;">{{ fmod($s_quantity = round($service->quantity, 1), 1) == 0.0 ? (int)$s_quantity : number_format($s_quantity, 1, ',', '') }}</td>
-                                        <td style="width: 10%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->price, 0, '', '.') }}</td>
-                                        <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->subtotal, 0, '', '.') }}</td>
+                                        <td style="width: 10%;">{{ number_format($service->quantity, 2, ',', '.') }}</td>
+                                        <td style="width: 10%; ">
+                                            <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($service->price, 0, '', '.') }}
+                                        </td>
+                                        <td style="width: 20%; ">
+                                            <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($service->subtotal, 0, '', '.') }}
+                                        </td>
 
                                     </tr>
-                                    <tr>
-                                        <td style="width: 40%; " colspan="3"></td>
-                                        <td style="width: 10%; ">(A)</td>
-                                        <td style="width: 10%; ">{{ $service->adminPercentage }}</td>
-                                        <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->adminValue, 0, '', '.') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 40%; " colspan="3"></td>
-                                        <td style="width: 10%; ">(I)</td>
-                                        <td style="width: 10%; ">{{ $service->unforeseenPercentage }}</td>
-                                        <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->unforeseenValue, 0, '', '.') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 40%; " colspan="3"></td>
-                                        <td style="width: 10%; ">(U)</td>
-                                        <td style="width: 10%; ">{{ $service->profitPercentage }}</td>
-                                        <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->profitValue, 0, '', '.') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%; " colspan="4"></td>
-                                        <td style="width: 10%; ">IVA 19%</td>
-                                        <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($service->iva, 0, '', '.') }}</td>
-                                    </tr>
+
                                 @endforeach
+                                <tr>
+                                    <td style="width: 40%; " colspan="3"></td>
+                                    <td style="width: 10%; ">(A)</td>
+                                    <td style="width: 10%; ">{{   number_format($budget->adminPercentage, 0, '', '.') }}%</td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->adminValue, 0, '', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 40%; " colspan="3"></td>
+                                    <td style="width: 10%; ">(I)</td>
+                                    <td style="width: 10%; ">{{   number_format($budget->unforeseenPercentage, 0, '', '.') }}%</td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->unforeseenValue, 0, '', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 40%; " colspan="3"></td>
+                                    <td style="width: 10%; ">(U)</td>
+                                    <td style="width: 10%; ">{{   number_format($budget->profitPercentage, 0, '', '.') }}%</td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->profitValue, 0, '', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 10%; " colspan="4"></td>
+                                    <td style="width: 10%; ">IVA 19%</td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->servicesIva, 0, '', '.') }}
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td style="width: 10%; " colspan="3"></td>
                                     <td style="width: 10%; " colspan="2">VALOR INSTALACIÓN</td>
-                                    <td style="width: 20%; "><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{  number_format($budget->total_services, 0, '', '.') }}</td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->total_services, 0, '', '.') }}
+                                    </td>
                                 </tr>
 
                             </tbody>
@@ -239,7 +272,7 @@
                         COORDINADOR DE ALTURAS Y OFICIAL EN ALTURAS</p>
                     <p style="margin-left: 25px;"><?php echo $budget->observation_4  == 'si' ? '':'NO' ?> INCLUYE SISO
                     </p>
-                    
+
                     <p style="margin-left: 25px;">NO INCLUYE TRABAJOS DE MAMPOSTERIA, DE OBRA CIVIL, O VIDRIO</p>
                     <p style="margin-left: 25px;">NO INCLUYE TRABAJO NOCTURNO O DOMINICAL</p>
                     <p style="margin-left: 25px;">CUMPLIMOS CON TODOS LOS PROTOCOLOS DE SALUD Y SEGURIDAD EN EL TRABAJO
@@ -252,25 +285,26 @@
                 </td>
             </tr>
             @if($budget->observation)
-            <tr>
-                <td colspan="8">
-                    <p>OTRAS OBSERVACIONES:</p>
-                    <p style="margin-left: 25px;text-transform: uppercase">{{ $budget->observation }}</p>
-                </td>
-            </tr>
+                <tr>
+                    <td colspan="8">
+                        <p>OTRAS OBSERVACIONES:</p>
+                        <p style="margin-left: 25px;text-transform: uppercase">{{ $budget->observation }}</p>
+                    </td>
+                </tr>
             @endif
             <tr>
-                <td colspan="3">COSTOS DE TRANSPORTE</td>
-                <td colspan="5"><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ $budget->delivery_cost }}</td>
-            </tr>
-            <tr>
                 <td colspan="3">TOTAL COTIZADO</td>
-                <td colspan="5" style="color: red"><?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->total + $budget->delivery_cost, 0, '', '.') }}</td>
+                <td colspan="5" style="color: red">
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->total, 0, '', '.') }}
+                </td>
             </tr>
             <tr>
                 <td colspan="3">ANTICIPO <?php echo $budget->delivery_cost > 0  ? '+ COSTOS DE TRANSPORTE':'' ?></td>
-                <td colspan="5" style="color: red">{{ number_format($budget->advance_payment_percentage, 0, '', '.') }}% |
-                <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{number_format($budget->advance_payment_value + $budget->delivery_cost, 0, '', '.')}}</td>
+                <td colspan="5" style="color: red">
+                    {{ number_format($budget->advance_payment_percentage, 0, '', '.') }}%
+                    |
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?>{{ number_format($budget->advance_payment_value, 0, '', '.') }}
+                </td>
             </tr>
             <tr>
                 <td colspan="3">GARANTÍA</td>

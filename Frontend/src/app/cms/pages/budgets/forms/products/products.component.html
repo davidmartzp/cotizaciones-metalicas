@@ -108,21 +108,21 @@
             </table>
         </div>
 
-        <div class="col-12 d-flex justify-content-end">
-            <div class="mb-3 text-end">
+        <div class="col-12 d-flex justify-content-end" >
+            <div class="mb-3 text-end" [hidden]="hideFields">
                 <label for="delivery_cost" class="form-label">Valor de flete</label>
                 <input type="number" class="form-control bg-dark text-white text-end" id="delivery_cost" name="delivery_cost"[(ngModel)]="delivery_cost" (input)="this.calculateTotalSupplies()" >
             </div>
         </div>
 
         <div class="col-12 d-flex justify-content-end">
-            <div class="mb-3 text-end">
-                <label for="total_iva" class="form-label">IVA (19%)</label>
-                <input type="number" class="form-control bg-dark text-white text-end" id="total_iva" name="total_iva" [(ngModel)]="total_iva" readonly>
+            <div class="mb-3 text-end" [hidden]="hideFields"> 
+                <label for="suppliesIva" class="form-label">IVA (19%)</label>
+                <input type="number" class="form-control bg-dark text-white text-end" id="suppliesIva" name="suppliesIva" [(ngModel)]="suppliesIva" readonly >
             </div>
         </div>
 
-        <div class="col-12 mt-3">
+        <div class="col-12 mt-3" [hidden]="hideFields">
             <h5>Total de Suministros:
                 <input type="number" value="000" id="total_supplies" [(ngModel)]="total_supplies"
                     [ngModelOptions]="{standalone: true}" readonly
@@ -132,4 +132,4 @@
         </div>
     </div>
 </div>
-<app-modal-search (productSelected)="getProductSelected($event)"></app-modal-search>
+<app-modal-search (productSelected)="getProductSelected($event)" [currency]="currency"></app-modal-search>

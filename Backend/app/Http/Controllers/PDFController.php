@@ -18,20 +18,18 @@ class PDFController extends Controller
     public function generatePDF($budget_id)
     {
 
-
-
-        // Obtener el presupuesto por ID
+        // Obtener la cotización por ID
         $budget = Budget::where('code', $budget_id)->first();
 
-        // Verificar si el presupuesto existe
+        // Verificar si la cotización existe
         if (!$budget) {
             return response()->json(['error' => 'Budget not found'], 404);
         }
 
-        // Obtener los productos relacionados con el presupuesto
+        // Obtener los productos relacionados con la cotización
         $products = BudgetProduct::where('budget_id', $budget->id)->get();
 
-        // Obtener los servicios relacionados con el presupuesto
+        // Obtener los servicios relacionados con la cotización
         $services = BudgetService::where('budget_id', $budget->id)->get();
 
 
@@ -39,6 +37,7 @@ class PDFController extends Controller
         $user =  User::find($budget->user_id);
 
         //Lógica para determinar el precio de los productos que se muestra 
+
         foreach ($products as $product) {
             if ($product->apply_max_discount) {
                 $product->price = $product->price - $product->max_discount_value;
@@ -48,13 +47,19 @@ class PDFController extends Controller
             }
         }
         
+        //cantidad de productos
+        $total_products = 0;
+        foreach ($products as $product) {
+            $total_products += $product->quantity;
+        }
  
         // Construir los datos para la vista
         $data = [
             'budget' => $budget,
             'products' => $products,
             'services' => $services,
-            'user' => $user
+            'user' => $user,
+            'total_products' => $total_products
         ];
 
       $options = new Options();
@@ -66,9 +71,9 @@ class PDFController extends Controller
       $dompdf->loadHtml(view('pdf.table', $data)->render());
       $dompdf->setPaper('A4', 'portrait');
       $dompdf->render();
-      $dompdf->stream($budget->code.'.pdf');
+     // $dompdf->stream($budget->code.'.pdf');
 
-       //return view('pdf.table', $data);
+       return view('pdf.table', $data);
     }
 
       public function updateTable()

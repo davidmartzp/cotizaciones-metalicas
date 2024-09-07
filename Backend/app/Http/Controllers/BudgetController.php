@@ -15,37 +15,8 @@ use Illuminate\Support\Facades\Storage;
 
 class BudgetController extends Controller
 {
-    // Mostrar una lista de presupuestos
-    public function index()
-    {
-        $budgets = Budget::with('project', 'user')->get();
-        return view('budgets.index', compact('budgets'));
-    }
 
-    // Mostrar el formulario para crear un nuevo presupuesto
-    public function create()
-    {
-        $projects = Project::all();
-        $users = User::all();
-        $products = Product::orderBy('system_name')->get();
-        return view('budgets.create', compact('projects', 'users', 'products'));
-    }
 
-    // Guardar un nuevo presupuesto
-    public function store(Request $request)
-    {
-        $request->validate([
-            'code' => 'required|string|max:45',
-            'code_number' => 'required|string|max:45',
-            'date' => 'required|string|max:45',
-        ]);
-
-        $budget = new Budget();
-        $budget->fill($request->all());
-        $budget->save();
-
-        return redirect()->route('budgets.index')->with('success', 'Budget created successfully!');
-    }
 
     # Lista de presupuestos
 
@@ -123,6 +94,14 @@ class BudgetController extends Controller
             'delivery_cost' => $request->input('project.delivery_cost', 0),
             'advance_payment_percentage' => $request->input('project.advance_payment_percentage', 0),   
             'advance_payment_value' => $request->input('project.advance_payment_value', 0),
+            'suppliesIva' => $request->input('project.suppliesIva', 0), 
+            'servicesIva' => $request->input('project.servicesIva', 0),
+            'adminPercentage' => $request->input('project.adminPercentage', 0),
+            'adminValue' => $request->input('project.adminValue', 0),
+            'profitPercentage' => $request->input('project.profitPercentage', 0),
+            'profitValue' => $request->input('project.profitValue', 0),
+            'unforeseenPercentage' => $request->input('project.unforeseenPercentage', 0),
+            'unforeseenValue' => $request->input('project.unforeseenValue', 0)
 
             ]);
 
@@ -235,6 +214,7 @@ class BudgetController extends Controller
             return response()->json(['error' => 'Budget not found'], 404);
         }
 
+        
         // Actualizar el presupuesto
         $budget->update([
             'client_name' => $request->input('client.name', $budget->client_name),
@@ -267,6 +247,15 @@ class BudgetController extends Controller
 
             'advance_payment_percentage' => $request->input('project.advance_payment_percentage', $budget->advance_payment_percentage),
             'advance_payment_value' => $request->input('project.advance_payment_value', $budget->advance_payment_value),
+            'delivery_cost' => $request->input('project.delivery_cost', $budget->delivery_cost),
+            'suppliesIva' => $request->input('project.suppliesIva', $budget->suppliesIva),
+            'servicesIva' => $request->input('project.servicesIva', $budget->servicesIva),
+            'adminPercentage' => $request->input('project.adminPercentage', $budget->adminPercentage),
+            'adminValue' => $request->input('project.adminValue', $budget->adminValue),
+            'profitPercentage' => $request->input('project.profitPercentage', $budget->profitPercentage),
+            'profitValue' => $request->input('project.profitValue', $budget->profitValue),
+            'unforeseenPercentage' => $request->input('project.unforeseenPercentage', $budget->unforeseenPercentage),
+            'unforeseenValue' => $request->input('project.unforeseenValue', $budget->unforeseenValue)
 
         ]);
 
@@ -411,6 +400,8 @@ class BudgetController extends Controller
         // Obtener los servicios relacionados con el presupuesto
         $services = BudgetService::where('budget_id', $id)->get();
 
+       
+
         // Construir la respuesta con la estructura requerida
         $response = [
             'client' => [
@@ -434,6 +425,14 @@ class BudgetController extends Controller
                 'delivery_cost' => $budget->delivery_cost,
                 'advance_payment_percentage' => $budget->advance_payment_percentage,
                 'advance_payment_value' => $budget->advance_payment_value,
+                'suppliesIva' => $budget->suppliesIva,
+                'servicesIva' => $budget->servicesIva,
+                'adminPercentage' => $budget->adminPercentage,
+                'adminValue' => $budget->adminValue,
+                'profitPercentage' => $budget->profitPercentage,
+                'profitValue' => $budget->profitValue,
+                'unforeseenPercentage' => $budget->unforeseenPercentage,
+                'unforeseenValue' => $budget->unforeseenValue,
             ],
             'observation' => [
                 'observation' => $budget->observation,
@@ -511,44 +510,5 @@ class BudgetController extends Controller
         return response()->json($response);
     }
 
-    // Mostrar los detalles de un presupuesto específico
-    public function show($id)
-    {
-        $budget = Budget::with('project', 'user')->findOrFail($id);
-        return view('budgets.show', compact('budget'));
-    }
 
-    // Mostrar el formulario para editar un presupuesto existente
-    public function edit($id)
-    {
-        $budget = Budget::findOrFail($id);
-        $projects = Project::all();
-        $users = User::all();
-        return view('budgets.edit', compact('budget', 'projects', 'users'));
-    }
-
-    // Actualizar un presupuesto existente
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'code' => 'required|string|max:45',
-            'code_number' => 'required|string|max:45',
-            'date' => 'required|string|max:45',
-        ]);
-
-        $budget = Budget::findOrFail($id);
-        $budget->fill($request->all());
-        $budget->save();
-
-        return redirect()->route('budgets.index')->with('success', 'Budget updated successfully!');
-    }
-
-    // Eliminar un presupuesto
-    public function destroy($id)
-    {
-        $budget = Budget::findOrFail($id);
-        $budget->delete();
-
-        return redirect()->route('budgets.index')->with('success', 'Budget deleted successfully!');
-    }
 }

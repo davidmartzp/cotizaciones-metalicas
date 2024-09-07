@@ -20,8 +20,7 @@ import { Product } from '../../../../interfaces/product';
 })
 export class ProductsComponent {
   total_supplies: any = 0;
-  delivery_cost:any= 0
-  total_iva: any = 0;
+  
 
   @Input() products: Product[] = [];
 
@@ -37,8 +36,15 @@ export class ProductsComponent {
   @Output() totalSupplies = new EventEmitter<any>();
   @Output() totalBudget = new EventEmitter<any>();
   @Output() productsData = new EventEmitter<any>();
-  @Output() deliveryCost = new EventEmitter<any>();
+  
+  @Input() suppliesIva: any = 0;
   @Output() totalIva = new EventEmitter<any>();
+
+  @Input() delivery_cost: any = 0;
+  @Output() deliveryCost = new EventEmitter<any>();
+  
+  hideFields: boolean = true;  
+
 
   ngOnInit(): void {
     this.productsData.emit(this.products);
@@ -50,6 +56,10 @@ export class ProductsComponent {
   removeProduct(index: number) {
     this.products.splice(index, 1);
     this.calculateTotalSupplies();
+
+    if (this.products.length === 0) {
+      this.hideFields = true;
+    }
   }
 
   getProductSelected(product: any): void {
@@ -74,7 +84,7 @@ export class ProductsComponent {
       description: product.description,
       product_id: product.id,
       dolar_price: product.dolar_price,
-      price: product.price,
+      price: this.currency === 1 ? product.price_1 : product.dolar_price,
       price_1: product.price_1,
       unit: product.unit_sale,
       apply_max_discount: false,
@@ -86,7 +96,7 @@ export class ProductsComponent {
       quantity: 0,
       subtotal: 0,
       is_special: product.is_special,
-   
+     
       
       // Opcionales
       category_id: product.category_id,
@@ -102,6 +112,8 @@ export class ProductsComponent {
       created_at: product.created_at,
       updated_at: product.updated_at
     });
+
+    this.hideFields = false;
   }
 
   // Calcular Subtotal , Iva Y Total de acuerdo a la cantidad de productos
@@ -140,6 +152,7 @@ export class ProductsComponent {
     //Se calculan todos los suministros
     this.calculateTotalSupplies();
     this.sendProducts();
+    
   }
 
   calculateTotalIva() {
@@ -150,8 +163,22 @@ export class ProductsComponent {
       total += product.subtotal;
     });
 
+    //determinar el tipo de dato
+    if (typeof total === 'string') {
+      total = parseFloat(total);
+    }
+
+    if (typeof this.delivery_cost === 'string') {
+      this.delivery_cost = parseFloat(this.delivery_cost);
+    }
+
     let iva = (total + this.delivery_cost) * 0.19;
-    this.total_iva = iva;
+    this.suppliesIva = iva;
+
+    //SI LAMONEDA ES DOLAR el iva es 0
+    if (this.currency === 2) {
+      this.suppliesIva = 0;
+    }
 
   }
 
@@ -159,15 +186,29 @@ export class ProductsComponent {
 
   // Calcular el total de los productos
   calculateTotalSupplies() {
+   
+
     this.calculateTotalIva();
     this.total_supplies = 0;
     this.products.forEach(product => {
       this.total_supplies += product.subtotal;
     });
 
-    this.total_supplies += this.total_iva + this.delivery_cost;
+    if(typeof this.delivery_cost === 'string'){
+      this.delivery_cost = parseFloat(this.delivery_cost);
+    }
 
-    this.total_supplies = parseFloat(this.total_supplies.toFixed(2));
+    if(typeof this.suppliesIva === 'string'){
+      this.suppliesIva = parseFloat(this.suppliesIva);
+    }
+
+    if(typeof this.total_supplies === 'string'){
+      this.total_supplies = parseFloat(this.total_supplies);
+    }
+
+    this.total_supplies += this.suppliesIva + this.delivery_cost;
+
+    this.total_supplies = this.total_supplies.toFixed(2);
     this.calculateTotalBudget()
   }
 
@@ -198,14 +239,19 @@ export class ProductsComponent {
 
   calculateTotalBudget() {
     this.total_budget = this.total_supplies + this.total_services;
-    this.total_budget = parseFloat(this.total_budget).toFixed(2);
+
+    if(typeof this.total_budget === 'string'){
+      this.total_budget = parseFloat(this.total_budget);
+    }
+
+    this.total_budget = this.total_budget.toFixed(2);
 
     //emitir 
-    console.log("emitiendo",  this.delivery_cost);
-    this.totalSupplies.emit(this.total_supplies);
-    this.totalBudget.emit(this.total_budget);
-    this.totalIva.emit(this.total_iva);
-    this.deliveryCost.emit(this.delivery_cost);
+   
+    this.totalSupplies.emit(this.total_supplies || 0);
+    this.totalBudget.emit(this.total_budget || 0);
+    this.deliveryCost.emit(this.delivery_cost || 0);
+    this.totalIva.emit(this.suppliesIva);
 
   }
 
@@ -233,6 +279,14 @@ export class ProductsComponent {
           });
         },  1000);
       }
+      // si hay al menos un producto
+      if(changes['products']){
+        if(this.products.length > 0){
+          this.hideFields = false;
+        }
+      }
+
+
     }
   }
 

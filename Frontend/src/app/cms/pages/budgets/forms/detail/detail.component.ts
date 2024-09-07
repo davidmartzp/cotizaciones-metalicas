@@ -19,28 +19,17 @@ export class DetailComponent {
     warranty: '',
     payment_methods_notes: '',
     delivery_address: '',
-    offer_valid: '',
-    advance_payment_percentage: 0,
-    advance_payment_value: 0
+    offer_valid: ''
   };
 
   @Output() projectData = new EventEmitter<Project>();
 
-  @Input() total_budget : number = 0
 
   ngOnInit() {
     this.changeProjectData();
   }
 
   ngOnChanges(changes: SimpleChanges){
-    //recalcula el valor  calculatePay si hay cambio en total_budget con simplechange
-
-    if(changes['total_budget']){
-      this.total_budget = changes['total_budget'].currentValue;
-      this.calculatePay();
-      this.changeProjectData();
-    }
-
     if(changes['project']){
       this.project = changes['project'].currentValue;
     }
@@ -65,13 +54,5 @@ export class DetailComponent {
     
   }
 
-  calculatePay(){
-   
-    //calcularemos el valor del anticipo dependiendo del valor ingresado en porcentaje
-    if(this.project?.advance_payment_percentage){
-      this.project.advance_payment_value = this.total_budget*(this.project.advance_payment_percentage /100)
-    }
-    
-  }
-
+ 
 }
