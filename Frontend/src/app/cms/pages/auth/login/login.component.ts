@@ -27,6 +27,7 @@ export class LoginComponent {
       window.localStorage.setItem('metalicas-token', data.data.token);
       window.localStorage.setItem('metalicas-user', data.data.name);
       window.localStorage.setItem('metalicas-id', data.data.id);
+      window.localStorage.setItem('role', data.data.role);
 
       //navega al admin interno
       Swal.fire('Success', 'Has ingresado con éxito', 'success').then(() => {

@@ -24,8 +24,16 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/getProductById/{id}', 'App\Http\Controllers\ProductController@show');
     Route::put('/updateProduct/{id}', 'App\Http\Controllers\ProductController@update');
 
+    //Users 
+    Route::get('/getUsers', 'App\Http\Controllers\UserController@getUsers');
+    Route::get('/getUserById/{id}', 'App\Http\Controllers\UserController@getUserById');
+    Route::put('/updateUser/{id}', 'App\Http\Controllers\UserController@updateUser');
+    Route::put('/updateUserStatus/{id}', 'App\Http\Controllers\UserController@updateUserStatus');
 });
 
 
 //create a route that hash via post a string as a password
 Route::post('/hashPassword', 'App\Http\Controllers\HashController@hashPassword');
+
+//send email to reset password
+Route::post('/sendSetUserPassword', 'App\Http\Controllers\Mails\sendSetUserPassword@sendEmail');

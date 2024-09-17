@@ -24,5 +24,6 @@ export class AuthService {
     window.localStorage.removeItem('metalicas-id');
     window.location.reload()
   }
+  
 
 }

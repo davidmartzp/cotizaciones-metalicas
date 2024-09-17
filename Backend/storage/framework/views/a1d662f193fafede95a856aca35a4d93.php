@@ -119,9 +119,9 @@
                             </tr>
                             <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td style="width: 5%;"><?php echo e($loop->iteration); ?></td>
+                                    <td style="width: 5%;"><?php echo e($product->code_iva); ?></td>
                                     <td style="width: 30%;">
-                                        <p class="m-0"><?php echo e($product->description); ?></p>
+                                        <p class="m-0" style="font-size: 14px"><?php echo e($product->description); ?></p>
                                     </td>
                                     <td style="width: 5%;"><?php echo e($product->unit); ?></td>
                                     <td style="width: 10%;">
@@ -160,6 +160,15 @@
                                 <td style="width: 10%;">FLETE</td>
                                 <td style="width: 20%;">
                                     <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->delivery_cost, 0, '', '.')); ?>
+
+                                </td>
+                                <td style="width: 20%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;" colspan="4"></td>
+                                <td style="width: 10%;">SUBTOTAL</td>
+                                <td style="width: 20%;">
+                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_products, 0, '', '.')); ?>
 
                                 </td>
                                 <td style="width: 20%;"></td>
@@ -205,12 +214,15 @@
                                 <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                                     <tr>
-                                        <td style="width: 5%; "><?php echo e($loop->iteration + $total_products); ?></td>
+                                        <td style="width: 5%; "><?php echo e($loop->iteration); ?></td>
                                         <td style="width: 30%; ">
                                             <p class="m-0" style="font-size : 14px"><?php echo e($service->description); ?></p>
                                         </td>
                                         <td style="width: 5%; "><?php echo e($service->unit); ?></td>
-                                        <td style="width: 10%;"><?php echo e(number_format($service->quantity, 2, ',', '.')); ?></td>
+                                        <td style="width: 10%;">
+                                            <?php echo e(number_format($service->quantity, 2, ',', '.')); ?>
+
+                                        </td>
                                         <td style="width: 10%; ">
                                             <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($service->price, 0, '', '.')); ?>
 
@@ -223,10 +235,24 @@
                                     </tr>
 
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                <tr>
+                                    <td style="width: 40%; " colspan="3"></td>
+                                    <td style="width: 10%; "></td>
+                                    <td style="width: 10%; ">
+                                        SUBTOTAL
+                                    </td>
+                                    <td style="width: 20%; ">
+                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_services, 0, '', '.')); ?>
+
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td style="width: 40%; " colspan="3"></td>
                                     <td style="width: 10%; ">(A)</td>
-                                    <td style="width: 10%; "><?php echo e(number_format($budget->adminPercentage, 0, '', '.')); ?>%</td>
+                                    <td style="width: 10%; ">
+                                        <?php echo e(number_format($budget->adminPercentage, 0, '', '.')); ?>%
+                                    </td>
                                     <td style="width: 20%; ">
                                         <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->adminValue, 0, '', '.')); ?>
 
@@ -235,7 +261,9 @@
                                 <tr>
                                     <td style="width: 40%; " colspan="3"></td>
                                     <td style="width: 10%; ">(I)</td>
-                                    <td style="width: 10%; "><?php echo e(number_format($budget->unforeseenPercentage, 0, '', '.')); ?>%</td>
+                                    <td style="width: 10%; ">
+                                        <?php echo e(number_format($budget->unforeseenPercentage, 0, '', '.')); ?>%
+                                    </td>
                                     <td style="width: 20%; ">
                                         <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->unforeseenValue, 0, '', '.')); ?>
 
@@ -244,7 +272,9 @@
                                 <tr>
                                     <td style="width: 40%; " colspan="3"></td>
                                     <td style="width: 10%; ">(U)</td>
-                                    <td style="width: 10%; "><?php echo e(number_format($budget->profitPercentage, 0, '', '.')); ?>%</td>
+                                    <td style="width: 10%; ">
+                                        <?php echo e(number_format($budget->profitPercentage, 0, '', '.')); ?>%
+                                    </td>
                                     <td style="width: 20%; ">
                                         <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->profitValue, 0, '', '.')); ?>
 
@@ -312,15 +342,40 @@
 
                 </td>
             </tr>
-            <tr>
-                <td colspan="3">ANTICIPO <?php echo $budget->delivery_cost > 0  ? '+ COSTOS DE TRANSPORTE':'' ?></td>
-                <td colspan="5" style="color: red">
-                    <?php echo e(number_format($budget->advance_payment_percentage, 0, '', '.')); ?>%
-                    |
-                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->advance_payment_value, 0, '', '.')); ?>
+            <?php if($budget->advance_payment_percentage > 0): ?>
+                <tr>
+                    <td colspan="3">ANTICIPO <?php echo $budget->delivery_cost > 0  ? '+ COSTOS DE TRANSPORTE':'' ?>
+                    </td>
+                    <td colspan="5" style="color: red">
+                        <?php echo e(number_format($budget->advance_payment_percentage, 0, '', '.')); ?>%
+                        |
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->advance_payment_value, 0, '', '.')); ?>
 
-                </td>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <?php if($budget->delivery_address): ?>
+                <tr>
+                    <td colspan="3">LUGAR DE ENTREGA</td>
+                    <td colspan="5">
+                        <?php echo e($budget->delivery_address); ?>
+
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <?php if($budget->manufacture_delivery_time): ?>
+            <tr>
+                <td colspan="3">TIEMPO DE FABRICACIÓN</td>
+                <td colspan="5"><?php echo e($budget->manufacture_delivery_time); ?></td>
             </tr>
+            <?php endif; ?>
+            <?php if($budget->installation_delivery_time): ?>
+            <tr>
+                <td colspan="3">TIEMPO DE INSTALACIÓN</td>
+                <td colspan="5"><?php echo e($budget->installation_delivery_time); ?></td>
+            </tr>
+            <?php endif; ?>
+            
             <tr>
                 <td colspan="3">GARANTÍA</td>
                 <td colspan="5"><?php echo e($budget->warranty); ?></td>

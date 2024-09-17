@@ -15,23 +15,23 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'metalicas';
-
-  isAdmin: boolean = false;
+  showFill = false
   isLoggedIn: boolean = false;
 
-  constructor
-    (private router: Router) {
+  constructor(private router: Router) {
 
     this.router.events.subscribe((event: any) => {
 
-        this.isAdmin = true;
-
-        if (typeof window !== 'undefined') {
-          if (localStorage.getItem('metalicas-token')) {
-            this.isLoggedIn = true;
-          }
+      if (typeof window !== 'undefined') {
+        if (localStorage.getItem('metalicas-token')) {
+          this.isLoggedIn = true;
+          this.showFill = true;
+        }else{
+          this.isLoggedIn = false;
+          this.showFill = true;
         }
-       
+      }
+     
       //si la ruta incluye login y esta logeado
       if (this.router.url.includes('login') && this.isLoggedIn) {
         window.location.href = '/admin/budgets';
@@ -43,9 +43,11 @@ export class AppComponent {
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
-    if (localStorage.getItem('metalicas-token')) {
-      this.isLoggedIn = true;
-    }}
+      if (localStorage.getItem('metalicas-token')) {
+        this.isLoggedIn = true;
+        this.showFill = true;
+      }
+    }
   }
 
 

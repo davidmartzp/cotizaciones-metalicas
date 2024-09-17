@@ -6,12 +6,12 @@
 
 .table th,
 .table td {
-  padding: 0.5rem; /* Reducir el padding en las celdas */
+  padding: 0.3rem; /* Reducir el padding en las celdas */
   vertical-align: middle; /* Alinear verticalmente el contenido */
 }
 
 .table th {
-  font-weight: 500; /* Fuente más ligera para los encabezados */
+  font-weight: 600 !important; /* Fuente más ligera para los encabezados */
 }
 
 .table tbody tr {
@@ -29,9 +29,9 @@
 
 /* Reducir el tamaño de los botones */
 .table .btn {
-  padding: 0.25rem 0.5rem; /* Reducir el padding de los botones */
-  font-size: 0.7rem; /* Reducir el tamaño de la fuente en los botones */
-  margin: 0.1rem; /* Reducir el margen de los botones */
+  padding: 0.25rem 0.5rem !important; /* Reducir el padding de los botones */
+  font-size: 0.7rem !important; /* Reducir el tamaño de la fuente en los botones */
+  margin: 0.1rem !important; /* Reducir el margen de los botones */
 }
 
 /* Asegúrate de que los botones dentro de las celdas estén alineados a la derecha */

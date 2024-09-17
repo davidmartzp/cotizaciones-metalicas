@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="card p-5">
+        <div class="card-body">
+            <h5 class="card-title">Actualizar Usuario</h5>
+            <a (click)="returnToList()" class="btn btn-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Regresar
+            </a>
+            <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)" class="row">
+                <!-- Primera Columna -->
+                <div class="col-md-6">
+                    <!-- Código IVA -->
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" name="name" class="form-control" [(ngModel)]="user.name"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="initials">Iniciales</label>
+                        <input type="text" id="initials" name="initials" class="form-control" [(ngModel)]="user.initials"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="text" id="email" name="email" class="form-control" [(ngModel)]="user.email"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="text" id="phone" name="phone" class="form-control" [(ngModel)]="user.phone"
+                            required>
+                    </div>
+
+
+                    <!-- SELECT tipo se sistema-->
+                    <div class="form-group">
+                        <label for="role">Tipo de usuario</label>
+                        <select id="role" name="role" class="form-control" [(ngModel)]="user.role" required>
+                            <option value="">Seleccione un tipo de rol</option>
+                            <option value="1">ADMINISTRADOR</option>
+                            <option value="2">VENDEDOR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Estado</label>
+                        <select id="status" name="status" class="form-control" [(ngModel)]="user.status" required>
+                            <option value="1">ACTIVO</option>
+                            <option value="2">INACTIVO</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- Botón de envío en una fila separada -->
+                <div class="col-12 text-center" >
+                    <button type="submit" class="btn btn-primary w-100">Actualizar Usuario</button>
+                    <button [hidden]="true" (click)="resetPassword()" type="button" class="btn btn-danger w-100 mt-2">Solicitar reseteo de contraseña</button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

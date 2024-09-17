@@ -8,8 +8,9 @@
   <nav class="nav">
 
     <!-- Presupuestos -->
-    <a routerLink="cotizaciones-listar" class="nav-link">Cotizaciones</a>
-    <a routerLink="productos-listar" class="nav-link">Productos</a>
+    <a routerLink="cotizaciones-listar" class="nav-link" *ngIf="role=='1' || role=='2'">Cotizaciones</a>
+    <a routerLink="productos-listar" class="nav-link" *ngIf="role=='1'">Productos</a>
+    <a routerLink="usuarios-listar" class="nav-link" *ngIf="role=='1'">Usuarios</a>
 
   </nav>
 

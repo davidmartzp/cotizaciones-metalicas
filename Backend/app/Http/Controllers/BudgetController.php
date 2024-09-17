@@ -27,9 +27,13 @@ class BudgetController extends Controller
         
         // si role es 1 (admin) mostrar todos los presupuestos si no se filtra por el id de usuario
         if ($user->role == 1) {
-            $budgets = Budget::orderBy('created_at', 'desc')->get();
+            //primero los budgets del usuario actual
+            $budgetAdmin = Budget::where('user_id', $user->id)->orderBy('project_date', 'desc')->get();
+            $budgetUsers = Budget::where('user_id', '!=', $user->id)->orderBy('project_date', 'desc')->get();
+
+            $budgets = $budgetAdmin->merge($budgetUsers);
         } else {
-            $budgets = Budget::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+            $budgets = Budget::where('user_id', $user->id)->orderBy('project_date', 'desc')->get();
         }
 
     

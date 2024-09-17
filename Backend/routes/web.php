@@ -15,3 +15,7 @@ Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
     return 'Storage link created successfully!';
 });
+
+
+//route tu recover password 
+Route::get('recuperar-password/{id}', 'App\Http\Controllers\Auth\ForgotPasswordController@Index');

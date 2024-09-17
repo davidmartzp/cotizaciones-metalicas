@@ -1,9 +1,7 @@
-@if(isAdmin){
-    @if(isLoggedIn){
-        <app-dashboard ></app-dashboard>
-    }@else {
-        <app-login></app-login>
-    }  
-}@else{
-   
+@if(showFill){
+    
+        <app-dashboard *ngIf="isLoggedIn"></app-dashboard>
+    
+        <app-login *ngIf="!isLoggedIn"></app-login>
+      
 }
