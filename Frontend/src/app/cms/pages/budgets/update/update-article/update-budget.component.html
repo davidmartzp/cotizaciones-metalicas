@@ -1,10 +1,30 @@
 <div class="container">
     <div class="card p-5">
         <div class="card-body">
-            <h5 class="card-title">Actualizar Cotización</h5>
-            <a href="" class="btn btn-secondary mb-3">
-                <i class="fas fa-arrow-left"></i> Regresar
-            </a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Actualizar Cotización | {{ project.name }}</h5>
+                <div>
+                    <button 
+                        (click)="cloneBudget(budgetId)" 
+                        class="btn btn-warning btn-sm m-1" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="Clonar">
+                        <i class="fas fa-clone"></i>
+                    </button>
+                    <button 
+                        (click)="deleteBudget(budgetId)" 
+                        class="btn btn-danger btn-sm m-1" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <a href="" class="btn btn-secondary m-1">
+                        <i class="fas fa-undo"></i> Regresar
+                    </a>
+                </div>
+            </div>
             <form action="" method="POST">
                 <!-- Pestañas -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -98,10 +118,9 @@
 
                     <!-- Pestaña Observaciones -->
                     <div class="tab-pane fade" id="observaciones" role="tabpanel" aria-labelledby="observaciones-tab">
-                        <app-observations [observation]="observation"
-                            (observationData)="receiveObservation($event)"></app-observations>
+                        <app-observations [observations]="observationList" (observationData)="receiveObservations($event)" (observationChange)="receiveObservation($event)" [observation]="observation"></app-observations>
                     </div>
-                </div>
+                </div>  
                 <button type="button" class="btn btn-primary w-100" id="update_budget"
                     (click)="updateBudget()">Actualizar cotización</button>
             </form>

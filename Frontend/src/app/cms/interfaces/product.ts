@@ -23,7 +23,6 @@ export interface Product {
   id?: number;
   image?: string | null;
   material?: string;
-  price_2?: string;
   system_name?: string;
   type_structure?: string;
   unit_sale?: string;

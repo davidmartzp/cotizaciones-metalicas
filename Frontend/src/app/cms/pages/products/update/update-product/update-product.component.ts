@@ -230,7 +230,6 @@ export class UpdateProductComponent {
 
 
 
-
     console.log('Producto enviado', this.product);
 
     this.productService.updateProduct(this.product).subscribe((response) => {

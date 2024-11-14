@@ -8,6 +8,7 @@
       <button type="button" (click)="addBudget()" class="btn btn-primary add-btn">
         <i class="fas fa-plus"></i> Generar cotización
       </button>
+
     </div>
   </div>
 
@@ -49,6 +50,11 @@
             <th>Proyecto</th>
             <th>Cliente</th>
             <th>Fecha</th>
+            <th>Estado
+              <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#statusModal">
+                <i class="fas fa-info-circle"></i>
+              </button>
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -58,6 +64,7 @@
             <td>{{ budget.project_name }}</td>
             <td>{{ budget.client_name }}</td>
             <td>{{ budget.project_date }}</td>
+            <td><app-status [status]="budget.status" [budget]="budget.id"></app-status></td>
 
             <td class="actions">
               <button (click)="viewBudget(budget.code)" class="btn btn-info btn-sm" data-bs-toggle="tooltip"
@@ -68,14 +75,7 @@
                 data-bs-placement="top" title="Editar">
                 <i class="fas fa-edit"></i>
               </button>
-              <!--<button 
-                (click)="deleteBudget(budget.id)" 
-                class="btn btn-danger btn-sm" 
-                data-bs-toggle="tooltip" 
-                data-bs-placement="top" 
-                title="Eliminar">
-                <i class="fas fa-trash"></i>
-              </button>-->
+
             </td>
           </tr>
         </tbody>

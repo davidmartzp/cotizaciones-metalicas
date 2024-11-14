@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Generar reporte de cotizaciones</h4>
+        </div>
+        <div class="card-body">
+            <!-- Filtro de estado -->
+            <label for="status">Filtrar por Estado:</label>
+            <select id="status" [(ngModel)]="selectedStatus" class="form-control">
+                <option value="0">Todos los estados</option>
+                <option *ngFor="let status of statuses" [value]="status.id">{{ status.description }}</option>
+            </select>
+
+            <br>
+
+            <!-- Filtro de usuario -->
+            <label for="user">Filtrar por Usuario:</label>
+            <select id="user" [(ngModel)]="selectedUser" class="form-control">
+                <option value="0">Seleccione un usuario</option>
+                <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+            </select>
+
+            <br>
+
+            <!-- Filtros de fechas -->
+            <label for="startDate">Fecha de Inicio:</label>
+            <input type="date" id="startDate" [(ngModel)]="startDate" class="form-control">
+
+            <br>
+
+            <label for="endDate">Fecha de Fin:</label>
+            <input type="date" id="endDate" [(ngModel)]="endDate" class="form-control">
+
+            <br>
+
+            <!-- Botón para generar la URL -->
+            <button (click)="generateReportUrl()" class="btn btn-primary">Generar Reporte PDF</button>
+
+            <br><br>
+
+            <!-- Mostrar la URL generada -->
+            <div *ngIf="reportUrl">
+                <p><strong>URL del Reporte PDF:</strong></p>
+                <a [href]="reportUrl" target="_blank">{{ reportUrl }}</a>
+            </div>
+        </div>
+    </div>
+</div>

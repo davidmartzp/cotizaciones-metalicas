@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../environments/environment';
 import { UsersService } from '../../../../services/users.service';
+import { StatusComponent } from '../../../../components/status/status.component';
+import swal from 'sweetalert2';
 
 //declare a variable to save the budgets
 let savedBudgets: any;
@@ -13,7 +15,7 @@ let savedBudgets: any;
 @Component({
   selector: 'app-list-budgets',
   standalone: true,
-  imports: [NgxPaginationModule, CommonModule, FormsModule],
+  imports: [NgxPaginationModule, CommonModule, FormsModule, StatusComponent],
   templateUrl: './list-budgets.component.html',
   styleUrls: ['./list-budgets.component.css']
 })
@@ -74,14 +76,9 @@ export class ListBudgetsComponent implements OnInit {
     this.router.navigate([`/cotizaciones-generar`]);
   }
 
-  deleteBudget(id: number): void {
-    if (confirm('¿Estás seguro de que quieres eliminar este presupuesto?')) {
-      this.budgetService.deleteBudget(id).subscribe(
-        () => this.loadBudgets(),
-        (error: any) => console.error('Error deleting budget', error)
-      );
-    }
-  }
+
+
+
 
   // Propiedad calculada para obtener presupuestos filtrados
   get filteredBudgets(): any[] {

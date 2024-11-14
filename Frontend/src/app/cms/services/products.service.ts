@@ -55,7 +55,14 @@ export class ProductsService {
       map((data: any) => data)
     );
   }
+  // Enviar el archivo al backend a través de la API
+  importProducts(payload: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}products/import`, payload, { headers: this.getHeaders() }).pipe(
+      map((data: any) => data)
+    );
+  }
 
 
-  
+ 
+
 }

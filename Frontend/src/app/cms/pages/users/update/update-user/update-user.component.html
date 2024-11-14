@@ -54,7 +54,7 @@
                 <!-- Botón de envío en una fila separada -->
                 <div class="col-12 text-center" >
                     <button type="submit" class="btn btn-primary w-100">Actualizar Usuario</button>
-                    <button [hidden]="true" (click)="resetPassword()" type="button" class="btn btn-danger w-100 mt-2">Solicitar reseteo de contraseña</button>
+                    <button  (click)="resetPassword()" type="button" class="btn btn-danger w-100 mt-2" [hidden]="loading">Solicitar reseteo de contraseña</button>
 
                 </div>
             </form>

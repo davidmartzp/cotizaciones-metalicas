@@ -69,56 +69,63 @@ export class ListProductsComponent implements OnInit {
 
   onSubmit(form: any) {
 
-      let dataSearch = {
-        category: this.selectedCategory,
-        material: this.selectedMaterial,
-        unit: this.selectedUnit,
-        cutTypeCnc: this.cutTypes.CNC ? '1' : '',
-        cutTypePlain: this.cutTypes.Liso ? '2' : '',
-        structure: this.structure
-      };
+    let dataSearch = {
+      category: this.selectedCategory,
+      material: this.selectedMaterial,
+      unit: this.selectedUnit,
+      cutTypeCnc: this.cutTypes.CNC ? 1 : 0,
+      cutTypePlain: this.cutTypes.Liso ? 1 : 0,
+      structure: this.structure
+    };
 
-      // Consultar productos suscribiendo al servicio getProducts
-      this.productService.searchProducts(dataSearch).subscribe((data: any) => {
-        // valida campos con sweet alert
-        if (this.selectedCategory == "0" || this.selectedMaterial =="" ||  this.selectedUnit == "" || !this.cutTypes.CNC && !this.cutTypes.Liso || this.structure == "") {
-          Swal.fire({
-            title: '',
-            text: 'Debes seleccionar todos los filtros para realizar la búsqueda',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-          return;
-        }
+    //si la categoía es 4 sólo se envía la categoría
+    if (this.selectedCategory == "4") {
+      dataSearch.category = this.selectedCategory
+    } else {
+      //valida los campos con sweet alert
+      if (this.selectedCategory == "0" || this.selectedMaterial == "" || this.selectedUnit == "" || !this.cutTypes.CNC && !this.cutTypes.Liso || this.structure == "") {
+        Swal.fire({
+          title: '',
+          text: 'Debes seleccionar todos los filtros para realizar la búsqueda',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+    }
 
 
-        //si hay datos en la respuesta se muestra la tabla y s epagina de lo sweet alert 
-        if (data.length > 0) {
-          this.withoutProducts = false;
-          this.products = data;
-          this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
-        } else {
-          this.withoutProducts = true;
-          //Mensaje de error con sweetalert2
-          Swal.fire({
-            title: '',
-            text: 'No se encontraron productos con los filtros seleccionados',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      });
-    
+
+    // Consultar productos suscribiendo al servicio getProducts
+    this.productService.searchProducts(dataSearch).subscribe((data: any) => {
+
+      //si hay datos en la respuesta se muestra la tabla  
+      if (data.length > 0) {
+        this.withoutProducts = false;
+        this.products = data;
+        this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
+      } else {
+        this.withoutProducts = true;
+        //Mensaje de error con sweetalert2
+        Swal.fire({
+          title: '',
+          text: 'No se encontraron productos con los filtros seleccionados',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+
   }
 
-    // Propiedad calculada para obtener presupuestos filtrados
-    get filteredProducts(): any[] {
-      if (!this.filterText.trim()) {
-        return this.products;
-      }
-      const filter = this.filterText.toLowerCase();
-      return this.products.filter(product => 
-        product.system_name.toLowerCase().includes(filter) 
-      );
+  // Propiedad calculada para obtener presupuestos filtrados
+  get filteredProducts(): any[] {
+    if (!this.filterText.trim()) {
+      return this.products;
     }
+    const filter = this.filterText.toLowerCase();
+    return this.products.filter(product =>
+      product.system_name.toLowerCase().includes(filter)
+    );
+  }
 }

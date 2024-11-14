@@ -21,6 +21,7 @@ import { MailService } from '../../../../services/mail.service';
   styleUrl: './update-user.component.css',
 })
 export class UpdateUserComponent {
+  loading = false;
   userId: string | null = null;
   user = {
     name: '',
@@ -118,8 +119,6 @@ export class UpdateUserComponent {
     }
 
 
-    console.log('Usuario enviado', this.user);
-
     this.userService.updateUser(this.user).subscribe((response) => {
       console.log('Respuesta del servidor', response);
       Swal.fire({
@@ -142,6 +141,7 @@ export class UpdateUserComponent {
   }
 
   resetPassword() {
+    this.loading = true;
     //confirmar si se desea resetear la contraseña
     Swal.fire({
       title: '¿Estás seguro de que deseas resetear la contraseña de este usuario?',
@@ -161,6 +161,7 @@ export class UpdateUserComponent {
             title: 'Correo electrónico enviado',
             text: 'Se ha enviado un correo electrónico al usuario con un enlace para restablecer su contraseña',
           });
+          this.loading = false;
         }, (error) => {
           console.error('Error al enviar el correo electrónico', error);
           Swal.fire({
@@ -168,6 +169,7 @@ export class UpdateUserComponent {
             title: '',
             text: 'Ha ocurrido un error al enviar el correo electrónico',
           });
+          this.loading = false;
         });
       }
     });

@@ -1,79 +1,30 @@
-<div class="container" *ngIf="observation">
+<div class="container" *ngIf="ObservationsList && ObservationsList.length > 0">
     <div class="row p-5">
-        <!-- INCLUYE VISITAS PARA TOMA DE MEDIDAS EN SITIO -->
-        <div class="mb-3">
-            <label class="form-label">INCLUYE VISITAS PARA TOMA DE MEDIDAS EN SITIO</label>
-            <div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_1" id="visitas_medidas_si" value="si"
-                        [(ngModel)]="observation.observation_1" (change)="changeObservationData()">
-                    <label class="form-check-label" for="visitas_medidas_si">Sí</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_1" id="visitas_medidas_no" value="no"
-                        [(ngModel)]="observation.observation_1" (change)="changeObservationData()">
-                    <label class="form-check-label" for="visitas_medidas_no">No</label>
-                </div>
-            </div>
+      <!-- Iterar sobre la lista dinámica de observaciones -->
+      <div class="mb-3" *ngFor="let item of ObservationsList; let i = index">
+        <label class="form-label">{{item.description}}</label> 
+        <div>
+          <!-- Checkbox para seleccionar "Sí" -->
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" [id]="'yes_' + i" 
+                   [checked]="item.value === 'si'" (change)="onCheckboxChange(i, 'si')">
+            <label class="form-check-label" [for]="'yes_' + i">Sí</label>
+          </div>
+          <!-- Checkbox para seleccionar "No" -->
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" [id]="'no_' + i" 
+                   [checked]="item.value === 'no'" (change)="onCheckboxChange(i, 'no')">
+            <label class="form-check-label" [for]="'no_' + i">No</label>
+          </div>
         </div>
-
-        <!-- INCLUYE INSTALACIÓN -->
-        <div class="mb-3">
-            <label class="form-label">INCLUYE INSTALACIÓN</label>
-            <div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_2" id="instalacion_si" value="si"
-                        [(ngModel)]="observation.observation_2" (change)="changeObservationData()">
-                    <label class="form-check-label" for="instalacion_si">Sí</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_2" id="instalacion_no" value="no"
-                        [(ngModel)]="observation.observation_2" (change)="changeObservationData()">
-                    <label class="form-check-label" for="instalacion_no">No</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- COORDINADOR DE ALTURAS Y OFICIAL EN ALTURAS -->
-        <div class="mb-3">
-            <label class="form-label">COORDINADOR DE ALTURAS Y OFICIAL EN ALTURAS</label>
-            <div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_3" id="coordinador_alturas_si"
-                        value="si" [(ngModel)]="observation.observation_3" (change)="changeObservationData()">
-                    <label class="form-check-label" for="coordinador_alturas_si">Sí</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_3" id="coordinador_alturas_no"
-                        value="no" [(ngModel)]="observation.observation_3" (change)="changeObservationData()">
-                    <label class="form-check-label" for="coordinador_alturas_no">No</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- SISO -->
-        <div class="mb-3">
-            <label class="form-label">SISO - Coordinador alturas</label>
-            <div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_4" id="siso_si" value="si"
-                        [(ngModel)]="observation.observation_4" (change)="changeObservationData()">
-                    <label class="form-check-label" for="siso_si">Sí</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="observation_4" id="siso_no" value="no"
-                        [(ngModel)]="observation.observation_4" (change)="changeObservationData()">
-                    <label class="form-check-label" for="siso_no">No</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Otra observación campo abierto-->
-        <div class="mb-3">
-            <label for="observation" class="form-label ">Otra observación</label><br>
-            <textarea  id="observation" name="observation" [(ngModel)]="observation.observation" rows="9"
-                (input)="changeObservationData()"></textarea>
-        </div>
-
+      </div>
+  
+      <!-- Otra observación campo abierto -->
+      <div class="mb-3">
+        <label for="other_observation" class="form-label">Otra observación</label><br>
+        <textarea id="other_observation" name="other_observation" [(ngModel)]="observation"
+                  rows="9" (input)="changeObservationData()"></textarea>
+      </div>
     </div>
-</div>
+  </div>
+  

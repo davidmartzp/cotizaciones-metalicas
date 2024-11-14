@@ -24,6 +24,7 @@ class User extends Authenticatable
         'budgets_count',
         'initials',
         'role',
+        'reset_password_token',
         'status',
     ];
   

@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- Material (Select) -->
-                    <div class="form-group">
+                    <div class="form-group" [hidden]="product.category_id == '4'">
                         <label for="material">Material</label>
                         <select id="material" name="material" class="form-control" [(ngModel)]="product.material"
                             required>
@@ -50,7 +50,7 @@
                     </div>
 
                     <!-- Calibre -->
-                    <div class="form-group">
+                    <div class="form-group" [hidden]="product.category_id == '4'">
                         <label for="caliber">Calibre</label>
                         <input type="number" id="caliber" name="caliber" class="form-control"
                             [(ngModel)]="product.caliber" required>
@@ -66,9 +66,9 @@
                 </div>
 
                 <!-- Segunda Columna -->
-                <div class="col-md-6">
+                <div class="col-md-6" >
                     <!-- Features (checkboxes con valores 1 y 2) -->
-                    <div class="form-group">
+                    <div class="form-group" [hidden]="product.category_id == '4'">
                         <label>Características</label>
                         <div>
                             <label>
@@ -85,7 +85,7 @@
                     </div>
 
                     <!-- Tipo de Estructura -->
-                    <div class="form-group">
+                    <div class="form-group" [hidden]="product.category_id == '4'">
                         <label>Estructura</label>
                         <div [hidden]="product.category_id == '3'">
                             <label>

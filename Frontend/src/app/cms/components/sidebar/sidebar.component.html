@@ -8,13 +8,20 @@
   <nav class="nav">
 
     <!-- Presupuestos -->
-    <a routerLink="cotizaciones-listar" class="nav-link" *ngIf="role=='1' || role=='2'">Cotizaciones</a>
-    <a routerLink="productos-listar" class="nav-link" *ngIf="role=='1'">Productos</a>
-    <a routerLink="usuarios-listar" class="nav-link" *ngIf="role=='1'">Usuarios</a>
+    <a routerLink="cotizaciones-listar" class="nav-link" *ngIf="role=='1' || role=='2'" routerLinkActive="active">Cotizaciones</a>
+    <div class="nav-item dropdown" *ngIf="role=='1'">
+      <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Productos
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+      <li><a class="dropdown-item" routerLink="productos-listar" routerLinkActive="active">Listar Productos</a></li>
+      <li><a class="dropdown-item" routerLink="productos-importar" routerLinkActive="active">Importar Productos</a></li>
+      </ul>
+    </div>
+    <a routerLink="reportes" class="nav-link" *ngIf="role=='1'" routerLinkActive="active">Reportes</a>
+    <a routerLink="usuarios-listar" class="nav-link" *ngIf="role=='1'" routerLinkActive="active">Usuarios</a>
 
   </nav>
-
-
 
   <div class="text-center">
     <div class="logout-btn">

@@ -1,0 +1,99 @@
+.status-container {
+  position: relative;
+  display: inline-block;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  padding: 0.5em;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.badge.selected {
+  border: 2px solid #000;
+}
+
+.selector {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 0.5em 0;
+  z-index: 1000;
+  width: 140px;
+}
+
+.selector ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+.selector li {
+  margin: 12px;
+  padding: 180x;
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  width: 100px;
+  background-color: #333;
+  transition: background-color 0.3s;
+}
+
+.selector li:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #ccc;
+}
+
+
+.color-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item p {
+  margin: 0;
+  /* Remove margins for better spacing */
+}
+
+.list-group-item div {
+  display: inline-block;
+}

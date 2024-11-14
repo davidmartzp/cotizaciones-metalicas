@@ -1,0 +1,54 @@
+.table tbody td 
+{
+    background-color: #333;
+}
+
+.table-container {
+    max-width: 100%; /* Ancho máximo de la tabla */
+    overflow-x: auto; /* Habilitar desplazamiento horizontal */
+    margin-top: 20px; /* Espacio superior */
+ 
+}
+  
+table {
+    margin-top: 50px !important; /* Espacio superior */
+    width: 100%; /* Ancho total de la tabla */
+    border-collapse: collapse; /* Colapsar bordes */
+    margin: 0 auto; /* Centrar la tabla */
+    font-size: 9px;
+}
+  
+th, td {
+    padding: 12px 15px; /* Espaciado interno */
+    border: 1px solid #000 !important; /* Borde de celdas */
+    text-align: left; /* Alinear texto a la izquierda */
+}
+
+  
+th {
+    background-color: #212529; /* Color de fondo de encabezados */
+    font-weight: bold; /* Negrita en encabezados */
+    color: #ccc; /* Color de texto en encabezados */
+}
+  
+tbody tr:nth-child(even) {
+    background-color: #444; /* Color de fondo alterno */
+}
+  
+tbody tr:hover {
+    background-color: #555; /* Color de fondo al pasar el ratón */
+}
+  
+button {
+    margin-top: 20px; /* Espacio superior para el botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #ccc; /* Color de texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar cursor al pasar el ratón */
+}
+  
+button:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el ratón */
+}

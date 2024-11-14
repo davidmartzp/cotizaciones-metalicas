@@ -29,7 +29,7 @@ class setUserPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Set User Password',
+            subject: 'Generación de contraseña',
         );
     }
 

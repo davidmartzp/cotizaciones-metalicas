@@ -36,7 +36,6 @@ class BudgetProduct extends Model
         'other_discount_value',
         'price',
         'price_1',
-        'price_2',
         'product_id',
         'system_name',
         'type_structure',

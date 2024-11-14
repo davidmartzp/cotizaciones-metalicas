@@ -1,0 +1,115 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Importar Productos</h3>
+  </div>
+  <div class="card-body">
+    <div class="table-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" class="form-control-file" />
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#validationsModal">
+            Ver Validaciones
+          </button>
+          <button class="btn btn-primary" (click)="downloadExample()">Descargar base de productos</button>
+          <button *ngIf="previewData.length > 0 && !loading" (click)="onSubmit()" class="btn btn-success">Subir
+            Datos
+          </button>
+        </div>
+     
+      </div>
+
+      <div class="modal fade" id="validationsModal" tabindex="-1" aria-labelledby="validationsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="validationsModalLabel">Validaciones</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Estas son algunas de las validaciones a tomar en cuenta en el sistema de carga masiva:</p>
+              <ul>
+                <li>No eliminar ni cambiar de posición las columnas</li>
+                <li>Si ya existe un id en el archivo, se sugiere no modificarlo</li>
+                <li>El campo Id puede estar vacío, esto creará ese producto como nuevo en la base de datos</li>
+                <li>El nombre del sistema no puede estar vacío.</li>
+                <li>El valor de corte CNC debe ser 1 o estar vacío.</li>
+                <li>El valor de corte Liso debe ser 2 o estar vacío.</li>
+                <li>El material debe ser GALVANIZADO, ALUMINIO, INOXIDABLE, CR o estar vacío.</li>
+                <li>El calibre debe ser un número o estar vacío.</li>
+                <li>El tipo de estructura debe ser SI, NO o estar vacío.</li>
+                <li>El precio debe ser un número.</li>
+                <li>El descuento debe ser un número entre 0 y 99.</li>
+                <li>El precio en dólares debe ser un número.</li>
+                <li>La categoría debe ser uno de los siguientes valores numéricos:</li>
+                <ul>
+                  <li>1 = FACHADAS</li>
+                  <li>2 = CORTASOLES</li>
+                  <li>3 = CIELORASOS</li>
+                  <li>4 = CARPINTERÍA METÁLICA</li>
+                </ul>
+              </ul>
+              <h5>Cabecera del Archivo Excel</h5>
+              <p>La primera fila del archivo Excel debe tener la siguiente estructura en el mismo orden:</p>
+              <ul>
+                <li>ID</li>
+                <li>Código IVA</li>
+                <li>Nombre del sistema</li>
+                <li>Corte CNC</li>
+                <li>Corte Liso</li>
+                <li>Material</li>
+                <li>Calibre</li>
+                <li>Estructura</li>
+                <li>Unidad de venta</li>
+                <li>Precio</li>
+                <li>Descuento</li>
+                <li>Precio en dólares</li>
+                <li>Categoría</li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table *ngIf="previewData.length > 0" class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Código IVA</th>
+            <th>Nombre del Sistema</th>
+            <th>Corte CNC</th>
+            <th>Corte Liso</th>
+            <th>Material</th>
+            <th>Calibre</th>
+            <th>Tipo de Estructura</th>
+            <th>Unidad de Venta</th>
+            <th>Precio</th>
+            <th>Descuento</th>
+            <th>Precio en Dólares</th>
+            <th>ID de Categoría</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of previewData">
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+            <td>{{ row[9] }}</td>
+            <td>{{ row[10] }}</td>
+            <td>{{ row[11] }}</td>
+            <td>{{ row[12] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

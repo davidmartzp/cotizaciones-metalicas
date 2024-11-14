@@ -38,6 +38,8 @@ export class CreateProductComponent {
   type_structure: boolean = false;
   angle_hanger: boolean = false;
 
+  
+
 
   constructor(private productService: ProductsService, private router: Router) { }
 
@@ -99,7 +101,7 @@ export class CreateProductComponent {
       return;
     }
 
-    if (this.product.material == '') {
+    if (this.product.material == '' && this.product.category_id != '4') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -157,7 +159,7 @@ export class CreateProductComponent {
 
     // Debe escoger entre feature_cnc o feature_plain
 
-    if (this.product.feature_cnc == "" && this.product.feature_plain == "") {
+    if (this.product.feature_cnc == "" && this.product.feature_plain == "" && this.product.category_id != '4') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -213,5 +215,6 @@ export class CreateProductComponent {
   returnToList() {
     this.router.navigate([`/productos-listar`]);
   }
+
 
 }

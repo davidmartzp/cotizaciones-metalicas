@@ -1,5 +1,7 @@
 .centered-container {
     background-color: #343a40;
+    background-size: cover;
+    background-position: center;
     color: #ffffff;
     height: 100vh;
     display: flex;
@@ -7,28 +9,58 @@
     align-items: center;
     margin: 0;
 }
+
 .login-form {
-    background-color: #212529;
+    background-color: rgba(33, 37, 41, 0.9); /* Fondo semi-transparente */
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
     width: 100%;
     max-width: 400px;
 }
+
+.logo {
+    display: block;
+    margin: 0 auto 1.5rem; /* Centra el logo y añade espacio debajo */
+    max-width: 80%; /* Asegúrate de que el logo no sea demasiado grande */
+}
+
 .login-form .form-control {
     background-color: #495057;
     border: none;
     color: #ffffff;
 }
+
 .login-form .form-control:focus {
-    background-color: #495057;
-    border-color: #6c757d;
+    background-color: #6c757d;
+    border-color: #007bff;
     box-shadow: none;
 }
+
 .login-form .btn-primary {
     background-color: #007bff;
     border: none;
 }
+
 .login-form .btn-primary:hover {
     background-color: #0056b3;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 1.5rem; /* Centra el logo y añade espacio debajo */
+    max-width: 80%; /* Asegúrate de que el logo no sea demasiado grande */
+    border-radius: 50%; /* Hace el logo redondo */
+    object-fit: cover; /* Asegura que la imagen mantenga su proporción */
+    height: 100px; /* Establece una altura fija para el logo */
+    width: 100px; /* Establece una anchura fija para el logo */
+}
+.footer {
+    position: absolute; /* Posición absoluta para que esté en el fondo */
+    bottom: 20px; /* Espaciado desde el fondo */
+    left: 0;
+    right: 0; /* Asegura que esté centrado */
+    color: #ffffff; /* Color del texto */
+    font-size: 0.9rem; /* Tamaño de fuente */
+    padding: 1rem 0; /* Espaciado superior e inferior */
 }

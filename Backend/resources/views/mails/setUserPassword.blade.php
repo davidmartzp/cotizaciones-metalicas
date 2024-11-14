@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña</title>
+    <title>Reestablecer Contraseña</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,9 +67,9 @@
         <div class="content">
             <h1>Solicitud de Restablecimiento de Contraseña</h1>
             <p>Hola, {{$data['name']}}</p>
-            <p>Recibimos una solicitud para restablecer tu contraseña en el sistema de cotizaciones. Si no realizaste esta solicitud, por favor ignora este correo.</p>
-            <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
-            <a href="{{$data['link']}}" class="button">Restablecer Contraseña</a>
+            <p>Se ha generado una solicitud para restablecer tu contraseña en el sistema de cotizaciones.</p>
+            <p>Para generar tu contraseña, haz clic en el siguiente enlace:</p>
+            <a href="{{$data['link']}}" class="button">Generar Contraseña</a>
             <p>Si tienes algún problema, por favor contáctanos.</p>
         </div>
         <div class="footer">

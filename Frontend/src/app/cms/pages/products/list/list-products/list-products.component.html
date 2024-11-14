@@ -102,6 +102,8 @@
           <tr>
             <th>Tipo de sistema</th>
             <th>Sistema</th>
+            <th>Material</th>
+            <th>Unidad</th>
             <th>Corte CNC</th>
             <th>Corte LISO</th>
             <th>Estructura</th>
@@ -116,6 +118,8 @@
             <td *ngIf="product.category_id == '3'">CIELORASOS</td>
             <td *ngIf="product.category_id == '4'">CARPINTERÍA METÁLICA</td>
             <td>{{ product.system_name }}</td>
+            <td>{{ product.material }}</td>
+            <td>{{ product.unit_sale }}</td>
             <td *ngIf="product.feature_cnc == '1'">SI</td>
             <td *ngIf="product.feature_cnc !== '1'">NO</td>
             <td *ngIf="product.feature_plain == '2'">SI</td>

@@ -7,6 +7,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            margin-top: 5px;
         }
 
         td {
@@ -70,11 +71,13 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </td>
-
             </tr>
+        </tbody>
+    </table>
 
+    <table>
+        <tbody>
             <tr>
                 <td colspan="1">Señor/es:</td>
                 <td colspan="2"><?php echo e($budget->client_name); ?></td>
@@ -88,7 +91,6 @@
                 <td colspan="2"><?php echo e($budget->client_company); ?></td>
                 <td colspan="1">Teléfono:</td>
                 <td colspan="1"><?php echo e($budget->client_phone); ?></td>
-
                 <td colspan="1">Proyecto:</td>
                 <td colspan="2" style="color: red ; text-transform: uppercase;"><?php echo e($budget->project_name); ?></td>
             </tr>
@@ -104,237 +106,227 @@
                     conocer nuestra siguiente oferta:
                 </td>
             </tr>
-            <tr>
-                <td colspan="8">
-                    <table>
-                        <tbody>
-                            <tr style="font-size: 9px; ">
-                                <td class=" fw-bold" style="width: 5%; ">ITEM</td>
-                                <td class="fw-bold" style="width: 30%;">DESCRIPCIÓN</td>
-                                <td class=" fw-bold" style="width: 5%; ">UNIDAD</td>
-                                <td class=" fw-bold" style="width: 10%; ">CANT</td>
-                                <td class=" fw-bold" style="width: 10%; ">VALOR UND</td>
-                                <td class=" fw-bold" style="width: 20%; ">VALOR TOTAL</td>
-                                <td class="fw-bold" style="width: 20%;">PRODUCTO</td>
-                            </tr>
-                            <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td style="width: 5%;"><?php echo e($product->code_iva); ?></td>
-                                    <td style="width: 30%;">
-                                        <p class="m-0" style="font-size: 14px"><?php echo e($product->description); ?></p>
-                                    </td>
-                                    <td style="width: 5%;"><?php echo e($product->unit); ?></td>
-                                    <td style="width: 10%;">
-                                        <?php echo e(fmod($quantity = round($product->quantity, 1), 1) == 0.0 ? (int)$quantity : number_format($quantity, 1, ',', '')); ?>
+        </tbody>
+    </table>
 
-                                    </td>
-                                    <td style="width: 10%;">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>
-                                        <?php echo e(number_format($product->price, 0, '', '.')); ?>
-
-                                        <?php if($product->apply_max_discount): ?>
-                                            Dto.(<?php echo e($product->max_discount); ?>%)
-                                        <?php endif; ?>
-                                        <?php if($product->apply_other_discount): ?>
-                                            Dto.(<?php echo e($product->other_discount); ?>%)
-                                        <?php endif; ?>
-                                    </td>
-                                    <td style="width: 20%;">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($product->subtotal, 0, '', '.')); ?>
-
-                                    </td>
-
-
-                                    <td style="width: 20%;">
-                                        <?php if($product->image): ?>
-                                            <img src="<?php echo e(url('public/images/' . $product->image)); ?>"
-                                                width="150px" alt="<?php echo e($product->name); ?>">
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-
-
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td style="width: 10%;" colspan="4"></td>
-                                <td style="width: 10%;">FLETE</td>
-                                <td style="width: 20%;">
-                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->delivery_cost, 0, '', '.')); ?>
-
-                                </td>
-                                <td style="width: 20%;"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%;" colspan="4"></td>
-                                <td style="width: 10%;">SUBTOTAL</td>
-                                <td style="width: 20%;">
-                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_products, 0, '', '.')); ?>
-
-                                </td>
-                                <td style="width: 20%;"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%;" colspan="4"></td>
-                                <td style="width: 10%;">IVA 19%</td>
-                                <td style="width: 20%;">
-                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->suppliesIva, 0, '', '.')); ?>
-
-                                </td>
-                                <td style="width: 20%;"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%; " colspan="3"></td>
-                                <td style="width: 10%; " colspan="2">VALOR SUMINISTROS</td>
-                                <td style="width: 20%; ">
-                                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->total_supplies, 0, '', '.')); ?>
-
-                                </td>
-                                <td style="width: 20%; "></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </td>
+    <table>
+        <tbody>
+            <tr style="font-size: 9px; ">
+                <td class=" fw-bold" style="width: 5%; ">ITEM</td>
+                <td class="fw-bold" style="width: 30%;">DESCRIPCIÓN</td>
+                <td class=" fw-bold" style="width: 5%; ">UNIDAD</td>
+                <td class=" fw-bold" style="width: 10%; ">CANT</td>
+                <td class=" fw-bold" style="width: 10%; ">VALOR UND</td>
+                <td class=" fw-bold" style="width: 20%; ">VALOR TOTAL</td>
+                <td class="fw-bold" style="width: 20%;">PRODUCTO</td>
             </tr>
-            <?php if(count($services) > 0): ?>
-
+            <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                    <td colspan="8">
-                        <table>
-                            <tbody>
-                                <tr style="font-size: 9px; ">
-                                    <td class=" fw-bold" style="width: 5%; ">ITEM</td>
-                                    <td class="fw-bold" style="width: 30%;">DESCRIPCIÓN</td>
-                                    <td class=" fw-bold" style="width: 5%; ">UNIDAD</td>
-                                    <td class=" fw-bold" style="width: 10%; ">CANT</td>
-                                    <td class=" fw-bold" style="width: 10%; ">VALOR UND</td>
-                                    <td class=" fw-bold" style="width: 20%; ">VALOR TOTAL</td>
+                    <td style="width: 5%;"><?php echo e($product->code_iva); ?></td>
+                    <td style="width: 30%;">
+                        <p class="m-0" style="font-size: 14px"><?php echo e($product->description); ?></p>
+                    </td>
+                    <td style="width: 5%;"><?php echo e($product->unit); ?></td>
+                    <td style="width: 10%;">
+                        <?php echo e(fmod($quantity = round($product->quantity, 1), 1) == 0.0 ? (int)$quantity : number_format($quantity, 1, ',', '')); ?>
 
-                                </tr>
-                                <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    </td>
+                    <td style="width: 10%;">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?>
+                        <?php echo e(number_format($product->price, 0, '', '.')); ?>
 
-                                    <tr>
-                                        <td style="width: 5%; "><?php echo e($loop->iteration); ?></td>
-                                        <td style="width: 30%; ">
-                                            <p class="m-0" style="font-size : 14px"><?php echo e($service->description); ?></p>
-                                        </td>
-                                        <td style="width: 5%; "><?php echo e($service->unit); ?></td>
-                                        <td style="width: 10%;">
-                                            <?php echo e(number_format($service->quantity, 2, ',', '.')); ?>
+                        <?php if($product->apply_max_discount): ?>
+                            Dto.(<?php echo e($product->max_discount); ?>%)
+                        <?php endif; ?>
+                        <?php if($product->apply_other_discount): ?>
+                            Dto.(<?php echo e($product->other_discount); ?>%)
+                        <?php endif; ?>
+                    </td>
+                    <td style="width: 20%;">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($product->subtotal, 0, '', '.')); ?>
 
-                                        </td>
-                                        <td style="width: 10%; ">
-                                            <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($service->price, 0, '', '.')); ?>
-
-                                        </td>
-                                        <td style="width: 20%; ">
-                                            <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($service->subtotal, 0, '', '.')); ?>
-
-                                        </td>
-
-                                    </tr>
-
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                <tr>
-                                    <td style="width: 40%; " colspan="3"></td>
-                                    <td style="width: 10%; "></td>
-                                    <td style="width: 10%; ">
-                                        SUBTOTAL
-                                    </td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_services, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 40%; " colspan="3"></td>
-                                    <td style="width: 10%; ">(A)</td>
-                                    <td style="width: 10%; ">
-                                        <?php echo e(number_format($budget->adminPercentage, 0, '', '.')); ?>%
-                                    </td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->adminValue, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 40%; " colspan="3"></td>
-                                    <td style="width: 10%; ">(I)</td>
-                                    <td style="width: 10%; ">
-                                        <?php echo e(number_format($budget->unforeseenPercentage, 0, '', '.')); ?>%
-                                    </td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->unforeseenValue, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 40%; " colspan="3"></td>
-                                    <td style="width: 10%; ">(U)</td>
-                                    <td style="width: 10%; ">
-                                        <?php echo e(number_format($budget->profitPercentage, 0, '', '.')); ?>%
-                                    </td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->profitValue, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 10%; " colspan="4"></td>
-                                    <td style="width: 10%; ">IVA 19%</td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->servicesIva, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td style="width: 10%; " colspan="3"></td>
-                                    <td style="width: 10%; " colspan="2">VALOR INSTALACIÓN</td>
-                                    <td style="width: 20%; ">
-                                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->total_services, 0, '', '.')); ?>
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                    </td>
+                    <td style="width: 20%;">
+                        <?php if($product->image): ?>
+                            <img src="<?php echo e(url('public/images/' . $product->image)); ?>"
+                                width="150px" alt="<?php echo e($product->name); ?>">
+                        <?php endif; ?>
                     </td>
                 </tr>
-            <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <td colspan="8" style="font-size: 12px; line-height: 0.8; margin-left: 10px;">
-                    <p>OBSERVACIONES:</p>
-                    <!--si los campos observation_n tienen valor si se muestran-->
-                    <p style="margin-left: 25px;"><?php echo $budget->observation_1  == 'si' ? '':'NO' ?> INCLUYE
-                        VISITAS PARA TOMA DE MEDIDAS EN SITIO.</p>
-                    <p style="margin-left: 25px;"><?php echo $budget->observation_2  == 'si' ? '':'NO' ?> INCLUYE
-                        INSTALACION</p>
-                    <p style="margin-left: 25px;"><?php echo $budget->observation_3  == 'si' ? '':'NO' ?> INCLUYE
-                        COORDINADOR DE ALTURAS Y OFICIAL EN ALTURAS</p>
-                    <p style="margin-left: 25px;"><?php echo $budget->observation_4  == 'si' ? '':'NO' ?> INCLUYE SISO
-                    </p>
+                <td style="width: 10%;" colspan="4"></td>
+                <td style="width: 10%;">FLETE</td>
+                <td style="width: 20%;">
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->delivery_cost, 0, '', '.')); ?>
 
-                    <p style="margin-left: 25px;">NO INCLUYE TRABAJOS DE MAMPOSTERIA, DE OBRA CIVIL, O VIDRIO</p>
-                    <p style="margin-left: 25px;">NO INCLUYE TRABAJO NOCTURNO O DOMINICAL</p>
-                    <p style="margin-left: 25px;">CUMPLIMOS CON TODOS LOS PROTOCOLOS DE SALUD Y SEGURIDAD EN EL TRABAJO
-                        LEGALMENTE VIGENTES</p>
-                    <p style="margin-left: 25px;">EL VALOR DE LA INSTALACION ESTA SUJETO A LA CANTIDAD DE METROS
-                        CONTRATADOS, LA DISMINUCION PODRIA AFECTAR EL VALOR OFERTADO.</p>
-                    <p style="margin-left: 25px;">EL VALOR FINAL DEL CONTRATO SERA CALCULADO DE ACUERDO CON LOS MEROS
-                        REALES INSTALADOS EN OBRA</p>
-                    <p style="margin-left: 25px;">COLOR A ESCOGER SEGÚN DISPONIBILIDAD</p>
                 </td>
+                <td style="width: 20%;"></td>
             </tr>
-            <?php if($budget->observation): ?>
+            <tr>
+                <td style="width: 10%;" colspan="4"></td>
+                <td style="width: 10%;">SUBTOTAL</td>
+                <td style="width: 20%;">
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_products, 0, '', '.')); ?>
+
+                </td>
+                <td style="width: 20%;"></td>
+            </tr>
+            <tr>
+                <td style="width: 10%;" colspan="4"></td>
+                <td style="width: 10%;">IVA 19%</td>
+                <td style="width: 20%;">
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->suppliesIva, 0, '', '.')); ?>
+
+                </td>
+                <td style="width: 20%;"></td>
+            </tr>
+            <tr>
+                <td style="width: 10%; " colspan="3"></td>
+                <td style="width: 10%; " colspan="2">VALOR SUMINISTROS</td>
+                <td style="width: 20%; ">
+                    <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->total_supplies, 0, '', '.')); ?>
+
+                </td>
+                <td style="width: 20%; "></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <?php if(count($services) > 0): ?>
+        <table>
+            <tbody>
+                <tr style="font-size: 9px; ">
+                    <td class=" fw-bold" style="width: 5%; ">ITEM</td>
+                    <td class="fw-bold" style="width: 30%;">DESCRIPCIÓN</td>
+                    <td class=" fw-bold" style="width: 5%; ">UNIDAD</td>
+                    <td class=" fw-bold" style="width: 10%; ">CANT</td>
+                    <td class=" fw-bold" style="width: 10%; ">VALOR UND</td>
+                    <td class=" fw-bold" style="width: 20%; ">VALOR TOTAL</td>
+                </tr>
+                <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr>
+                        <td style="width: 5%; "><?php echo e($loop->iteration); ?></td>
+                        <td style="width: 30%; ">
+                            <p class="m-0" style="font-size : 14px"><?php echo e($service->description); ?></p>
+                        </td>
+                        <td style="width: 5%; "><?php echo e($service->unit); ?></td>
+                        <td style="width: 10%;">
+                            <?php echo e(number_format($service->quantity, 2, ',', '.')); ?>
+
+                        </td>
+                        <td style="width: 10%; ">
+                            <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($service->price, 0, '', '.')); ?>
+
+                        </td>
+                        <td style="width: 20%; ">
+                            <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($service->subtotal, 0, '', '.')); ?>
+
+                        </td>
+                    </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <td style="width: 40%; " colspan="3"></td>
+                    <td style="width: 10%; "></td>
+                    <td style="width: 10%; ">
+                        SUBTOTAL
+                    </td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($subtotal_services, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 40%; " colspan="3"></td>
+                    <td style="width: 10%; ">(A)</td>
+                    <td style="width: 10%; ">
+                        <?php echo e(number_format($budget->adminPercentage, 0, '', '.')); ?>%
+                    </td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->adminValue, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 40%; " colspan="3"></td>
+                    <td style="width: 10%; ">(I)</td>
+                    <td style="width: 10%; ">
+                        <?php echo e(number_format($budget->unforeseenPercentage, 0, '', '.')); ?>%
+                    </td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->unforeseenValue, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 40%; " colspan="3"></td>
+                    <td style="width: 10%; ">(U)</td>
+                    <td style="width: 10%; ">
+                        <?php echo e(number_format($budget->profitPercentage, 0, '', '.')); ?>%
+                    </td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->profitValue, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; " colspan="4"></td>
+                    <td style="width: 10%; ">IVA 19%</td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->servicesIva, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; " colspan="3"></td>
+                    <td style="width: 10%; " colspan="2">VALOR INSTALACIÓN</td>
+                    <td style="width: 20%; ">
+                        <?php echo $budget->currency =='1' ? '$':'USD ' ?><?php echo e(number_format($budget->total_services, 0, '', '.')); ?>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <?php if(count($observations) > 0): ?>
+        <table>
+            <tbody>
+                <tr>
+                    <td colspan="8" style="font-size: 12px; line-height: 0.8; margin-left: 10px;">
+                        <p>OBSERVACIONES:</p>
+                        <!--si los campos observation_n tienen valor si se muestran-->
+                        <?php $__currentLoopData = $observations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $observation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(Str::startsWith($observation->description, '*')): ?>
+                                <p style="margin-left: 25px; text-transform: uppercase">
+                                    <?php echo e(ltrim($observation->description, '*')); ?></p>
+                            <?php else: ?>
+                                <p style="margin-left: 25px; text-transform: uppercase"><?php echo e($observation->value); ?>
+
+                                    <?php echo e($observation->description); ?></p>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <?php if($budget->observation): ?>
+        <table>
+            <tbody>
                 <tr>
                     <td colspan="8">
                         <p>OTRAS OBSERVACIONES:</p>
                         <p style="margin-left: 25px;text-transform: uppercase"><?php echo e($budget->observation); ?></p>
                     </td>
                 </tr>
-            <?php endif; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <table>
+        <tbody>
             <tr>
                 <td colspan="3">TOTAL COTIZADO</td>
                 <td colspan="5" style="color: red">
@@ -364,18 +356,17 @@
                 </tr>
             <?php endif; ?>
             <?php if($budget->manufacture_delivery_time): ?>
-            <tr>
-                <td colspan="3">TIEMPO DE FABRICACIÓN</td>
-                <td colspan="5"><?php echo e($budget->manufacture_delivery_time); ?></td>
-            </tr>
+                <tr>
+                    <td colspan="3">TIEMPO DE FABRICACIÓN</td>
+                    <td colspan="5"><?php echo e($budget->manufacture_delivery_time); ?></td>
+                </tr>
             <?php endif; ?>
             <?php if($budget->installation_delivery_time): ?>
-            <tr>
-                <td colspan="3">TIEMPO DE INSTALACIÓN</td>
-                <td colspan="5"><?php echo e($budget->installation_delivery_time); ?></td>
-            </tr>
+                <tr>
+                    <td colspan="3">TIEMPO DE INSTALACIÓN</td>
+                    <td colspan="5"><?php echo e($budget->installation_delivery_time); ?></td>
+                </tr>
             <?php endif; ?>
-            
             <tr>
                 <td colspan="3">GARANTÍA</td>
                 <td colspan="5"><?php echo e($budget->warranty); ?></td>

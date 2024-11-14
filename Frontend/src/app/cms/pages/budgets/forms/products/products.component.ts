@@ -106,7 +106,6 @@ export class ProductsComponent {
       feature_plain: product.feature_plain,
       image: product.image,
       material: product.material,
-      price_2: product.price_2,
       system_name: product.system_name,
       type_structure: product.type_structure,
       created_at: product.created_at,

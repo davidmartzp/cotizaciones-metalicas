@@ -10,30 +10,28 @@ use App\Models\Product;
 use App\Models\BudgetProduct;
 use App\Models\BudgetService;
 use App\Models\ProductHistory;
+use App\Models\BudgetObservation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BudgetController extends Controller
 {
-
-
-
-    # Lista de presupuestos
+    # Lista de cotizaciónes
 
     public function getBudgets()
     {
         //obtener el usuario de auth 
         $user = auth()->user();
         
-        // si role es 1 (admin) mostrar todos los presupuestos si no se filtra por el id de usuario
+        // si role es 1 (admin) mostrar todos los cotizacións si no se filtra por el id de usuario
         if ($user->role == 1) {
             //primero los budgets del usuario actual
-            $budgetAdmin = Budget::where('user_id', $user->id)->orderBy('project_date', 'desc')->get();
-            $budgetUsers = Budget::where('user_id', '!=', $user->id)->orderBy('project_date', 'desc')->get();
+            $budgetAdmin = Budget::where('user_id', $user->id)->where('deleted',0)->orderBy('project_date', 'desc')->orderBy('code', 'desc')->get();
+            $budgetUsers = Budget::where('user_id', '!=', $user->id)->where('deleted',0)->orderBy('project_date', 'desc')->orderBy('code', 'desc')->orderBy('project_date', 'desc')->get();
 
             $budgets = $budgetAdmin->merge($budgetUsers);
         } else {
-            $budgets = Budget::where('user_id', $user->id)->orderBy('project_date', 'desc')->get();
+            $budgets = Budget::where('user_id', $user->id)->where('deleted',0)->orderBy('project_date', 'desc')->orderBy('code', 'desc')->orderBy('code,project_date', 'desc')->get();
         }
 
     
@@ -43,29 +41,21 @@ class BudgetController extends Controller
     
     public function storeBudget(Request $request)
     {
-        
-        // Crear un nuevo presupuesto
+        // Crear un nuevo cotización
         DB::beginTransaction();
 
-        //try {
+        // Consultamos el usuario por el id
+        $user = User::find($request->input('user_id'));
 
+        // Necesitamos generes un código para la cotización , sería inicialaes del usuario+consecutivo hasta 5 digitos llena con ceros a la izquierda+ año YY
+        $code = $user->initials . str_pad($user->budgets_count + 1, 5, '0', STR_PAD_LEFT) . date('y');
 
-            //consultamos el usuario por el id
-            $user = User::find($request->input('user_id'));
+        // Actualizar el contador de cotizaciones del usuario
+        $user->budgets_count++;
+        $user->save();
 
-
-
-            // Necesitamos generes un código para la cotización , sería inicialaes del usuario+consecutivo hasta 5 digitos llena con ceros a la izquierda+ año YY
-            $code = $user->initials . str_pad($user->budgets_count + 1, 5, '0', STR_PAD_LEFT) . date('y');
-
-    
-            // Actualizar el contador de cotizaciones del usuario
-            $user->budgets_count++;
-            $user->save();
-
-
-            $budget = Budget::create([
-            'code'=>$code,
+        $budget = Budget::create([
+            'code' => $code,
             'user_id' => $request->input('user_id', ''),
             'client_name' => $request->input('client.name', ''),
             'client_numid' => $request->input('client.numid', ''),
@@ -83,22 +73,15 @@ class BudgetController extends Controller
             'payment_methods_notes' => $request->input('project.payment_methods_notes', ''),
             'delivery_address' => $request->input('project.delivery_address', ''),
             'offer_valid' => $request->input('project.offer_valid', ''),
-
-            'observation' => $request->input('observation.observation', ''),
-            'observation_1' => $request->input('observation.observation_1', ''),
-            'observation_2' => $request->input('observation.observation_2', ''),
-            'observation_3' => $request->input('observation.observation_3', ''),
-            'observation_4' => $request->input('observation.observation_4', ''),
-
+            'observation' => $request->input('observation', ''),
             'total' => $request->input('total', 0),
             'currency' => $request->input('currency', 1),
             'total_supplies' => $request->input('total_supplies', 0),
             'total_services' => $request->input('total_services', 0),
-            
             'delivery_cost' => $request->input('project.delivery_cost', 0),
-            'advance_payment_percentage' => $request->input('project.advance_payment_percentage', 0),   
+            'advance_payment_percentage' => $request->input('project.advance_payment_percentage', 0),
             'advance_payment_value' => $request->input('project.advance_payment_value', 0),
-            'suppliesIva' => $request->input('project.suppliesIva', 0), 
+            'suppliesIva' => $request->input('project.suppliesIva', 0),
             'servicesIva' => $request->input('project.servicesIva', 0),
             'adminPercentage' => $request->input('project.adminPercentage', 0),
             'adminValue' => $request->input('project.adminValue', 0),
@@ -106,39 +89,35 @@ class BudgetController extends Controller
             'profitValue' => $request->input('project.profitValue', 0),
             'unforeseenPercentage' => $request->input('project.unforeseenPercentage', 0),
             'unforeseenValue' => $request->input('project.unforeseenValue', 0)
+        ]);
 
-            ]);
+        // Crear productos
+        $productsData = $request->input('products', []);
 
-            // Crear productos
-            $productsData = $request->input('products', []);
-
-            foreach ($productsData as $productData) {
-            
-            
+        foreach ($productsData as $productData) {
             // Decodificar la imagen Base64
             $imageName = null;
-            if ($productData['image'] !== null) {
+            if (isset($productData['image'])  && $productData['image'] !== null) {
                 $image = $productData['image']; // Obtener el Base64
                 $image = str_replace('data:image/png;base64,', '', $image);
                 $image = str_replace('data:image/jpeg;base64,', '', $image); // Add this line to handle JPEG images
                 $image = str_replace(' ', '+', $image);
                 $imageName = uniqid() . '.png';
-                 // Define the directory where the image will be saved
-    $imageDirectory = public_path('images/');
+                // Define the directory where the image will be saved
+                $imageDirectory = public_path('images/');
 
-    // Ensure the directory exists
-    if (!file_exists($imageDirectory)) {
-        mkdir($imageDirectory, 0755, true);
-    }
+                // Ensure the directory exists
+                if (!file_exists($imageDirectory)) {
+                    mkdir($imageDirectory, 0755, true);
+                }
 
-    // Save the decoded image content to the specified directory
-    file_put_contents($imageDirectory . $imageName, base64_decode($image));
-
+                // Save the decoded image content to the specified directory
+                file_put_contents($imageDirectory . $imageName, base64_decode($image));
 
                 // Guardar el nombre o la ruta de la imagen en la base de datos
                 $request->merge(['image' => 'images/' . $imageName]);
             }
-            
+
             BudgetProduct::create([
                 'budget_id' => $budget->id,
                 'description' => $productData['description'] ?? '',
@@ -153,7 +132,7 @@ class BudgetController extends Controller
                 'code_iva' => $productData['code_iva'] ?? '',
                 'feature_cnc' => $productData['feature_cnc'] ?? '',
                 'feature_plain' => $productData['feature_plain'] ?? '',
-                'image' =>  $imageName,
+                'image' => $imageName,
                 'is_special' => $productData['is_special'] ?? null,
                 'iva_code' => $productData['iva_code'] ?? '',
                 'material' => $productData['material'] ?? '',
@@ -163,7 +142,6 @@ class BudgetController extends Controller
                 'other_discount_value' => $productData['other_discount_value'] ?? 0,
                 'price' => $productData['price'] ?? '',
                 'price_1' => $productData['price_1'] ?? '',
-                'price_2' => $productData['price_2'] ?? '',
                 'dolar_price' => $productData['dolar_price'] ?? '',
                 'product_id' => $productData['product_id'] ?? 0,
                 'quantity' => $productData['quantity'] ?? 0,
@@ -174,11 +152,11 @@ class BudgetController extends Controller
                 'unit' => $productData['unit'] ?? '',
                 'unit_sale' => $productData['unit_sale'] ?? ''
             ]);
-            }
+        }
 
-            // Crear servicios
-            $servicesData = $request->input('services', []);
-            foreach ($servicesData as $serviceData) {
+        // Crear servicios
+        $servicesData = $request->input('services', []);
+        foreach ($servicesData as $serviceData) {
             BudgetService::create([
                 'budget_id' => $budget->id,
                 'price' => $serviceData['price'] ?? 0,
@@ -196,30 +174,36 @@ class BudgetController extends Controller
                 'total' => $serviceData['total'] ?? 0,
                 'confirmed' => $serviceData['confirmed'] ?? 0
             ]);
-            }
+        }
 
-            DB::commit();
+        //Crear las observaciones
+        $observationsData = $request->input('observations', []);
+        foreach ($observationsData as $observationData) {
+            BudgetObservation::create([
+                'budget_id' => $budget->id,
+                'observation_id'    => $observationData['id'],
+                'value' => $observationData['value'],
+                
+            ]);
+        }
 
-            // Retornar el ID del presupuesto creado
-            return response()->json(['budget_id' => $budget->id], 201);
-      /*  } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' => 'An error occurred while creating the budget'], 500);
-        }*/
+        DB::commit();
+
+        // Retornar el ID dla cotización creado
+        return response()->json(['budget_id' => $budget->id], 201);
     }
 
     public function updateBudget(Request $request, $id)
     {
-        // Buscar el presupuesto por su ID
+        // Buscar la cotización por su ID
         $budget = Budget::find($id);
 
-        // Verificar si el presupuesto existe
+        // Verificar si la cotización existe
         if (!$budget) {
             return response()->json(['error' => 'Budget not found'], 404);
         }
 
-        
-        // Actualizar el presupuesto
+        // Actualizar la cotización
         $budget->update([
             'client_name' => $request->input('client.name', $budget->client_name),
             'client_numid' => $request->input('client.numid', $budget->client_id),
@@ -228,7 +212,6 @@ class BudgetController extends Controller
             'client_address' => $request->input('client.address', $budget->client_address),
             'client_phone' => $request->input('client.phone', $budget->client_phone),
             'client_email' => $request->input('client.email', $budget->client_email),
-
             'project_name' => $request->input('project.name', $budget->project_name),
             'project_date' => $request->input('project.date', $budget->project_date),
             'manufacture_delivery_time' => $request->input('project.manufacture_delivery_time', $budget->manufacture_delivery_time),
@@ -237,18 +220,11 @@ class BudgetController extends Controller
             'payment_methods_notes' => $request->input('project.payment_methods_notes', $budget->payment_methods_notes),
             'delivery_address' => $request->input('project.delivery_address', $budget->delivery_address),
             'offer_valid' => $request->input('project.offer_valid', $budget->offer_valid),
-
-            'observation' => $request->input('observation.observation', $budget->observation),
-            'observation_1' => $request->input('observation.observation_1', $budget->observation_1),
-            'observation_2' => $request->input('observation.observation_2', $budget->observation_2),
-            'observation_3' => $request->input('observation.observation_3', $budget->observation_3),
-            'observation_4' => $request->input('observation.observation_4', $budget->observation_4),
-
+            'observation' => $request->input('observation', $budget->observation),
             'total' => $request->input('total', $budget->total),
             'currency' => $request->input('currency', $budget->currency),
             'total_supplies' => $request->input('total_supplies', $budget->total_supplies),
             'total_services' => $request->input('total_services', $budget->total_services),
-
             'advance_payment_percentage' => $request->input('project.advance_payment_percentage', $budget->advance_payment_percentage),
             'advance_payment_value' => $request->input('project.advance_payment_value', $budget->advance_payment_value),
             'delivery_cost' => $request->input('project.delivery_cost', $budget->delivery_cost),
@@ -260,7 +236,6 @@ class BudgetController extends Controller
             'profitValue' => $request->input('project.profitValue', $budget->profitValue),
             'unforeseenPercentage' => $request->input('project.unforeseenPercentage', $budget->unforeseenPercentage),
             'unforeseenValue' => $request->input('project.unforeseenValue', $budget->unforeseenValue)
-
         ]);
 
         // Eliminar productos existentes
@@ -269,46 +244,39 @@ class BudgetController extends Controller
         // Crear productos nuevos
         $productsData = $request->input('products', []);
         foreach ($productsData as $productData) {
-        
-        
-        // Decodificar la imagen Base64
-        $imageName = null;
-        if ($productData['image']) {
-            $image = $productData['image']; // Obtener el Base64
+            // Decodificar la imagen Base64
+            $imageName = null;
+            if (isset($productData['image'])  && $productData['image']) {
+                $image = $productData['image']; // Obtener el Base64
 
-            //Si la imagen es una URL, sólo pasamos la ultima parte de la URL
-            if (strpos($image, 'http') !== false) {
-                $imageName = explode('/', $image);
-                $imageName = end($imageName);                
-           
-            } else {
-                //si una imagen es substituida, eliminamos la anterior
-                if ($productData['image'] !== $budget->image) {
-                    Storage::disk('public')->delete('images/' . $budget->image);
+                // Si la imagen es una URL, sólo pasamos la ultima parte de la URL
+                if (strpos($image, 'http') !== false) {
+                    $imageName = explode('/', $image);
+                    $imageName = end($imageName);
+                } else {
+                    // Si una imagen es substituida, eliminamos la anterior
+                    if ($productData['image'] !== $budget->image) {
+                        Storage::disk('public')->delete('images/' . $budget->image);
+                    }
+
+                    $image = str_replace('data:image/png;base64,', '', $image);
+                    $image = str_replace('data:image/jpeg;base64,', '', $image); // Add this line to handle JPEG images
+                    $image = str_replace(' ', '+', $image);
+                    $imageName = uniqid() . '.png';
+
+                    // Define the directory where the image will be saved
+                    $imageDirectory = public_path('images/');
+
+                    // Ensure the directory exists
+                    if (!file_exists($imageDirectory)) {
+                        mkdir($imageDirectory, 0755, true);
+                    }
+
+                    // Save the decoded image content to the specified directory
+                    file_put_contents($imageDirectory . $imageName, base64_decode($image));
                 }
+            }
 
-                $image = str_replace('data:image/png;base64,', '', $image);
-                $image = str_replace('data:image/jpeg;base64,', '', $image); // Add this line to handle JPEG images
-                $image = str_replace(' ', '+', $image);
-                $imageName = uniqid() . '.png';
-
-                 // Define the directory where the image will be saved
-    $imageDirectory = public_path('images/');
-
-    // Ensure the directory exists
-    if (!file_exists($imageDirectory)) {
-        mkdir($imageDirectory, 0755, true);
-    }
-
-    // Save the decoded image content to the specified directory
-    file_put_contents($imageDirectory . $imageName, base64_decode($image));
-
-
-                
-            } 
-        
-        }
-                        
             BudgetProduct::create([
                 'budget_id' => $budget->id,
                 'description' => $productData['description'] ?? '',
@@ -338,7 +306,6 @@ class BudgetController extends Controller
                 'other_discount_value' => $productData['other_discount_value'] ?? 0,
                 'price' => $productData['price'] ?? '',
                 'price_1' => $productData['price_1'] ?? '',
-                'price_2' => $productData['price_2'] ?? '',
                 'product_id' => $productData['product_id'] ?? null,
                 'quantity' => $productData['quantity'] ?? 0,
                 'subtotal' => $productData['subtotal'] ?? 0,
@@ -381,7 +348,20 @@ class BudgetController extends Controller
             BudgetService::where('budget_id', $id)->delete();
         }
 
-        // Devolver la respuesta con el presupuesto actualizado
+        // Actualizar las observaciones
+        BudgetObservation::where('budget_id', $id)->delete();
+
+        //Crear las observaciones
+        $observationsData = $request->input('observations', []);
+        foreach ($observationsData as $observationData) {
+            BudgetObservation::create([
+                'budget_id' => $budget->id,
+                'observation_id'    => $observationData['id'],
+                'value' => $observationData['value'],
+            ]);
+        }
+
+        // Devolver la respuesta con la cotización actualizado
         return response()->json([
             'message' => 'Budget updated successfully',
             'budget' => $budget
@@ -390,24 +370,27 @@ class BudgetController extends Controller
 
     public function getBudgetById($id)
     {
-        // Obtener el presupuesto por ID
+        // Obtener la cotización por ID
         $budget = Budget::find($id);
 
-        // Verificar si el presupuesto existe
+        // Verificar si la cotización existe
         if (!$budget) {
             return response()->json(['error' => 'Budget not found'], 404);
         }
 
-        // Obtener los productos relacionados con el presupuesto
+        // Obtener los productos relacionados con la cotización
         $products = BudgetProduct::where('budget_id', $id)->get();
 
-        // Obtener los servicios relacionados con el presupuesto
+        // Obtener los servicios relacionados con la cotización
         $services = BudgetService::where('budget_id', $id)->get();
 
        
+        // Obtener las observaciones relacionadas con la cotización
+        $observations = BudgetObservation::where('budget_id', $id)->get();
 
         // Construir la respuesta con la estructura requerida
         $response = [
+            'id' => $budget->id,
             'client' => [
                 'name' => $budget->client_name,
                 'numid' => $budget->client_numid,
@@ -438,13 +421,13 @@ class BudgetController extends Controller
                 'unforeseenPercentage' => $budget->unforeseenPercentage,
                 'unforeseenValue' => $budget->unforeseenValue,
             ],
-            'observation' => [
-                'observation' => $budget->observation,
-                'observation_1' => $budget->observation_1,
-                'observation_2' => $budget->observation_2,
-                'observation_3' => $budget->observation_3,
-                'observation_4' => $budget->observation_4,
-            ],
+            'observation' => $budget->observation,
+            'observations' => $observations->map(function ($observation) {
+                return [
+                    'id' => $observation->observation_id,
+                    'value' => $observation->value,
+                ];
+            }),
             'products' => $products->map(function ($product) {
                 return [
                     'id' => $product->id,
@@ -474,7 +457,6 @@ class BudgetController extends Controller
             'other_discount_value' => $product->other_discount_value,
             'price' => $product->price,
             'price_1' => $product->price_1,
-            'price_2' => $product->price_2,
             'product_id' => $product->product_id,
             'quantity' => $product->quantity,
             'subtotal' => $product->subtotal,
@@ -514,5 +496,105 @@ class BudgetController extends Controller
         return response()->json($response);
     }
 
+    //actualiza sólo el estado dla cotización
+    public function updateBudgetStatus(Request $request, $id)
+    {
+        // Buscar la cotización por su ID
+        $budget = Budget::find($id);
+
+        // Verificar si la cotización existe
+        if (!$budget) {
+            return response()->json(['error' => 'Budget not found'], 404);
+        }
+
+        
+        // Actualizar el estado dla cotización
+        $budget->update([
+            'status' => $request->input('status', $budget->status)
+        ]);
+
+        // Devolver la respuesta con la cotización actualizado
+        return response()->json([
+            'message' => 'Budget status updated successfully',
+            'budget' => $budget
+        ]);
+    }
+
+    //elimina una cotización usando el campo deleted
+    public function deleteBudget($id)
+    {
+       
+        // Buscar la cotización por su ID
+        $budget = Budget::find($id);
+
+        // Verificar si la cotización existe
+        if (!$budget) {
+            return response()->json(['error' => 'Budget not found'], 404);
+        }
+
+        // Actualizar el estado dla cotización
+        $budget->update([
+            'deleted' => 1
+        ]);
+
+        // Devolver la respuesta con la cotización actualizado
+        return response()->json([
+            'message' => 'Budget deleted successfully',
+            'budget' => $budget
+        ]);
+    }
+
+    //clonar una cotización y sus productos y servicios generando un codigo nuevo
+    public function cloneBudget($id)
+    {
+        // Buscar la cotización por su ID
+        $budget = Budget::find($id);
+
+        // Verificar si la cotización existe
+        if (!$budget) {
+            return response()->json(['error' => 'Budget not found'], 404);
+        }
+
+        //obtener el usuario de auth 
+        $user = auth()->user();
+
+        // Necesitamos generes un código para la cotización , sería inicialaes del usuario+consecutivo hasta 5 digitos llena con ceros a la izquierda+ año YY
+        $code = $user->initials . str_pad($user->budgets_count + 1, 5, '0', STR_PAD_LEFT) . date('y');
+
+        // Actualizar el contador de cotizaciones del usuario
+        $user->budgets_count++;
+        $user->save();
+
+        // Clonar la cotización
+        $newBudget = $budget->replicate();
+        $newBudget->code = $code;
+        $newBudget->status = 1;
+        //FECHA DE CREACIÓN
+        $newBudget->created_at = date('Y-m-d H:i:s');
+        $newBudget->updated_at = date('Y-m-d H:i:s');
+        $newBudget->save();
+
+        // Clonar los productos
+        $products = BudgetProduct::where('budget_id', $id)->get();
+        foreach ($products as $product) {
+            $newProduct = $product->replicate();
+            $newProduct->budget_id = $newBudget->id;
+            $newProduct->save();
+        }
+
+        // Clonar los servicios
+        $services = BudgetService::where('budget_id', $id)->get();
+        foreach ($services as $service) {
+            $newService = $service->replicate();
+            $newService->budget_id = $newBudget->id;
+            $newService->save();
+        }
+
+        // Devolver la respuesta con la cotización clonado
+        return response()->json([
+            'message' => 'Budget cloned successfully',
+            'budget' => $newBudget
+        ]);
+    }
 
 }

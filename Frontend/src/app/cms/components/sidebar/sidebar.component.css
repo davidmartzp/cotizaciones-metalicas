@@ -21,7 +21,7 @@
     padding: 10px;
 }
 .sidebar .logo img {
-    width: 100px; /* Ajusta el tamaño del logo según sea necesario */
+    width: 70px; /* Ajusta el tamaño del logo según sea necesario */
 }
 .sidebar .nav {
     display: flex;
@@ -49,10 +49,12 @@
     border: none;
     color: #ffffff;
     border-radius: 50%; /* Botón redondo */
-    padding: 10px;
-    font-size: 20px;
+  
+    font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 30px; /* Ancho fijo para mantener la forma redonda */
+    height: 30px; /* Altura fija para mantener la forma redonda */
 }
 .sidebar .logout-btn button:hover {
     background-color: #c82333; /* Color de fondo al pasar el ratón */

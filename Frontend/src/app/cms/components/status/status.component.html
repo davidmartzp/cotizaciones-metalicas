@@ -1,0 +1,81 @@
+<div class="status-container" (click)="toggleSelector($event)">
+    <span class="badge" [ngStyle]="{'background-color': getStatusData().color}">
+        {{ getStatusData().description }}
+    </span>
+
+    <div class="selector" *ngIf="showSelector">
+        <button class="close-btn" (click)="closeSelector($event)">×</button>
+        <ul>
+            <li *ngFor="let st of statuses" (click)="selectStatus(st)"
+                [ngStyle]="{'background-color': statusData[st].color}">
+                {{ statusData[st].description }}
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+<!-- Modal HTML -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusModalLabel">Explicación de Estados</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: grey;"></span>
+                        <div>
+                            <strong>Borrador</strong>
+                            <p>El estado inicial de la cotización. Aún no se ha enviado para revisión.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: #2196F3;"></span>
+                        <div>
+                            <strong>Aceptada</strong>
+                            <p>La cotización ha sido aceptada por el cliente.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: #FF5722;"></span>
+                        <div>
+                            <strong>Rechazada</strong>
+                            <p>La cotización ha sido rechazada por el cliente.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: #FFC107;"></span>
+                        <div>
+                            <strong>En revisión</strong>
+                            <p>La cotización está siendo revisada por el equipo interno.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: #4CAF50;"></span>
+                        <div>
+                            <strong>Completada</strong>
+                            <p>La cotización se ha concretado como una venta.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="color-circle" style="background-color: #F44336;"></span>
+                        <div>
+                            <strong>Cancelada</strong>
+                            <p>La cotización ha sido cancelada y ya no está en consideración.</p>
+                        </div>
+                    </li>
+
+                    
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

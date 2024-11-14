@@ -35,7 +35,7 @@ export class BudgetsService {
 
   deleteBudget(id: number): Observable<any> {
     const headers = this.getHeaders(); // Get the headers
-    return this.http.delete(`${this.apiUrl}Budget/${id}`, { headers });
+    return this.http.delete(`${this.apiUrl}deleteBudget/${id}`, { headers });
   }
 
   getBudgetById(id: any): Observable<any> {
@@ -46,6 +46,17 @@ export class BudgetsService {
   updateBudget(id: any, Budget: any): Observable<any> {
     const headers = this.getHeaders(); // Get the headers
     return this.http.put(`${this.apiUrl}updateBudget/${id}`, Budget, { headers });
+  }
+
+
+  updateBudgetStatus(id: any, Budget: any): Observable<any> {
+    const headers = this.getHeaders(); // Get the headers
+    return this.http.put(`${this.apiUrl}updateBudgetStatus/${id}`, Budget, { headers });
+  }
+
+  cloneBudget(id: any): Observable<any> {
+    const headers = this.getHeaders(); // Get the headers
+    return this.http.post(`${this.apiUrl}cloneBudget/${id}`, [], { headers });
   }
 
 }

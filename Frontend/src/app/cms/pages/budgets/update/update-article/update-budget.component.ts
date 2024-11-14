@@ -7,7 +7,7 @@ import { ModalSearchComponent } from '../../../../components/modal-search/modal-
 import { Product } from '../../../../interfaces/product';
 import { Client } from '../../../../interfaces/client';
 import { BudgetsService } from '../../../../services/budgets.service';
-
+import { Observation } from '../../../../interfaces/observation';
 import { ClientComponent } from '../../forms/client/client.component';
 import { DetailComponent } from "../../forms/detail/detail.component";
 import { ObservationsComponent } from "../../forms/observations/observations.component";
@@ -41,6 +41,7 @@ export class UpdateBudgetComponent implements OnInit {
   client: any;
   project: any;
   observation: any;
+  observationList: Observation[] = [];
   products: any[] = [];
   services: any[] = [];
 
@@ -60,7 +61,7 @@ export class UpdateBudgetComponent implements OnInit {
     profitValue: 0
   };
 
-  private budgetId: string | null = null;
+  budgetId: any | null = null;
 
   constructor(
     private budgetService: BudgetsService,
@@ -103,6 +104,7 @@ export class UpdateBudgetComponent implements OnInit {
       this.total_services = budget.total_services;
       this.total_budget = budget.total;
       this.currency = budget.currency;
+      this.observationList = budget.observations;
 
       //otras variables
       this.suppliesIva = budget.project.suppliesIva;
@@ -111,6 +113,7 @@ export class UpdateBudgetComponent implements OnInit {
       this.advance_payment_value = budget.project.advance_payment_value;
       this.services_iva = budget.project.servicesIva;
       
+
 
       this.AIU = {
         adminPercentage: budget.project.adminPercentage,
@@ -166,6 +169,11 @@ export class UpdateBudgetComponent implements OnInit {
 
   receiveObservation($event: any) {
     this.observation = $event;
+    console.log('Observation', this.observation);
+  }
+
+  receiveObservations($event: any) {
+    this.observationList = $event;
   }
 
   receiveProducts($event: any) {
@@ -329,9 +337,7 @@ export class UpdateBudgetComponent implements OnInit {
       this.project.unforeseenValue = this.AIU.unforeseenValue;
       this.project.profitPercentage = this.AIU.profitPercentage;
       this.project.profitValue = this.AIU.profitValue;
-
-
-
+   
       let budget = {
         client: this.client,
         project: this.project,
@@ -341,7 +347,8 @@ export class UpdateBudgetComponent implements OnInit {
         total: this.total_budget,
         currency: this.currency,
         total_supplies: this.total_supplies,
-        total_services: this.total_services
+        total_services: this.total_services,
+        observations: this.observationList
       };
 
       this.budgetService.updateBudget(this.budgetId, budget).subscribe((response: any) => {
@@ -356,5 +363,53 @@ export class UpdateBudgetComponent implements OnInit {
 
       });
     }
+  }
+
+  deleteBudget(id: number): void {
+    Swal.fire({
+      title: '¿Estás seguro de que quieres eliminar esta cotización? <br>',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.budgetService.deleteBudget(id).subscribe(
+          () => {
+            Swal.fire('Eliminado', 'La cotización ha sido eliminada.', 'success');
+            this.router.navigate(['/cotizaciones-listar']);
+          },
+          (error: any) => {
+            console.error('Error deleting budget', error);
+            Swal.fire('Error', 'Hubo un problema al eliminar la cotización.', 'error');
+          }
+        );
+      }
+    });
+  }
+
+  cloneBudget(id: number): void {
+    Swal.fire({
+      title: 'Se realizará una copia de esta cotización.',
+      text: '',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, clonar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.budgetService.cloneBudget(id).subscribe(
+          () => {
+            Swal.fire('Clonado', 'La cotización ha sido clonada.', 'success');
+            this.router.navigate(['/cotizaciones-listar']);
+          },
+          (error: any) => {
+            console.error('Error cloning budget', error);
+            Swal.fire('Error', 'Hubo un problema al clonar la cotización.', 'error');
+          }
+        );
+      }
+    });
   }
 }

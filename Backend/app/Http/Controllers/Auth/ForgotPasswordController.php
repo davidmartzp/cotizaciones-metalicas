@@ -13,9 +13,9 @@ use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
-    public function Index()
+    public function Index($token = null)
     {
-        return view('auth.recover-password');
+        return view('auth.recover-password', ['token' => $token]);
     }
 
     public function submitForgotPasswordForm(ForgotPassword $request)

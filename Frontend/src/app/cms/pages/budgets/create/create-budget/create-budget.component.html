@@ -98,8 +98,8 @@
 
                     <!-- Pestaña Observaciones -->
                     <div class="tab-pane fade" id="observaciones" role="tabpanel" aria-labelledby="observaciones-tab">
-                        <app-observations 
-                            (observationData)="receiveObservation($event)"></app-observations>
+                        <app-observations (observationChange)="receiveObservation($event)"
+                            (observationData)="receiveObservations($event)"></app-observations>
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary w-100" id="update_budget"

@@ -5,8 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Budget extends Model
 {
+    protected $primaryKey = 'id'; 
     protected $fillable = [
-    
         'client_name',
         'client_numid',
         'client_city',
@@ -43,7 +43,9 @@ class Budget extends Model
         'profitPercentage',
         'profitValue',
         'unforeseenPercentage',
-        'unforeseenValue'
+        'unforeseenValue',
+        'status',
+        'deleted'
         
     ];
 
@@ -72,5 +74,15 @@ class Budget extends Model
     public function servicesBudget()
     {
         return $this->hasMany(ServiceBudget::class);
+    }
+
+    public function observationsBudget()
+    {
+        return $this->hasMany(BudgetObservation::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

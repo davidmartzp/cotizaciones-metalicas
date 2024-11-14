@@ -11,6 +11,9 @@ import { UpdateProductComponent } from './cms/pages/products/update/update-produ
 import { ListUsersComponent } from './cms/pages/users/list/list-users/list-users.component';
 
 import { UpdateUserComponent } from './cms/pages/users/update/update-user/update-user.component';
+import { ImportComponent } from './cms/pages/products/import/import.component';
+import { ReportsComponent } from './cms/pages/reports/reports.component';
+import { CreateUserComponent } from './cms/pages/users/create/create-user/create-user.component';
 
 export const routes: Routes = [
     {
@@ -35,13 +38,19 @@ export const routes: Routes = [
         path: 'productos-actualizar/:id', component: UpdateProductComponent
     },
     {
+        path: 'productos-importar', component: ImportComponent
+    },
+    {
         path: 'usuarios-listar', component: ListUsersComponent
     },
     {
-        path: 'usuarios-crear', component: ListUsersComponent
+        path: 'usuarios-crear', component: CreateUserComponent
     },
     {
         path: 'usuarios-actualizar/:id', component: UpdateUserComponent
+    },
+    {
+        path: 'reportes', component  : ReportsComponent
     },
     {
         path: 'login',

@@ -137,11 +137,29 @@ export class ServicesComponent {
       subtotal += service.subtotal;
     });
 
+    
     //sumatoria de los valores de los campos de porcentaje AIU
+    if(typeof this.AIU.adminValue === 'string') {
+      this.AIU.adminValue = parseFloat(this.AIU.adminValue);
+    }
+    if(typeof this.AIU.unforeseenValue === 'string') {
+      this.AIU.unforeseenValue = parseFloat(this.AIU.unforeseenValue);
+    }
+    if(typeof this.AIU.profitValue === 'string') {
+      this.AIU.profitValue = parseFloat(this.AIU.profitValue);
+    }
+
     let totalAIU = this.AIU.adminValue + this.AIU.unforeseenValue + this.AIU.profitValue;
 
+    if(typeof this.services_iva === 'string') {
+      this.services_iva = parseFloat(this.services_iva);
+    }
+    if(typeof subtotal === 'string') {
+      subtotal = parseFloat(subtotal);
+    }
+
     //suma el total de los servicios con los valores de AIU + IVA
-    this.total_services = subtotal + totalAIU + parseFloat(this.services_iva);
+    this.total_services = subtotal + totalAIU + this.services_iva;
 
   }
 

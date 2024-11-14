@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecimiento de Contraseña</title>
+    <title>Reestablecimiento de Contraseña</title>
     <style>
         body {
             background-color: #121212;
@@ -49,7 +49,7 @@
             font-size: 14px;
         }
         button {
-            background-color: #007bff;
+            background-color: red;
             border: none;
             color: #ffffff;
             padding: 10px;
@@ -69,14 +69,34 @@
         <div class="logo">
             <img src="https://www.metalicasmundialltda.com/wp-content/uploads/elementor/thumbs/cropped-LOGO-MM-REGISTRADO-FINAL-RGB-oxam0xwhzeegbelx1jilijh3z4bnwidxvymln61pi0.png" alt="Logo">
         </div>
-        <h2>Restablece tu Contraseña</h2>
-        <form action="/restablecer" method="post">
+        <h2>Reestablecer contraseña</h2>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            </div>
+        @endif
+        <!-- mensaje de éxito -->
+        @if (session('status'))
+            <div class="alert alert-success" style="color: #28a745; margin-bottom: 16px;">
+            {{ session('status') }}
+            </div>
+        @endif
+
+        <form action="{{ route('resetPassword') }}" method="post">
+            @csrf
+            <input type="hidden" name="reset_password_token" value="{{ $token }}">
             <label for="new-password">Nueva Contraseña:</label>
-            <input type="password" id="new-password" name="new-password" required>
-            <label for="confirm-password">Confirmar Nueva Contraseña:</label>
-            <input type="password" id="confirm-password" name="confirm-password" required>
+            <input type="password" id="new-password" name="password" required>
+            <label for="password_confirmation">Confirmar Nueva Contraseña:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required>
             <button type="submit">Actualizar Contraseña</button>
         </form>
     </div>
+
+
 </body>
 </html>

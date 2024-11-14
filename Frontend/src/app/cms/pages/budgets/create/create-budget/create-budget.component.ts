@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { ModalSearchComponent } from '../../../../components/modal-search/modal-search.component';
 import { Product } from '../../../../interfaces/product';
-
+import { Observation } from '../../../../interfaces/observation';
 import { ClientComponent } from '../../forms/client/client.component';
 import { DetailComponent } from "../../forms/detail/detail.component";
 import { ObservationsComponent } from "../../forms/observations/observations.component";
@@ -47,6 +47,7 @@ export class CreateBudgetComponent {
   client?: Client;
   project: any;
   observation: any;
+  observations: Observation[] = [];
   products: Product[] = [];
   services: any[] = [];
 
@@ -146,6 +147,12 @@ export class CreateBudgetComponent {
 
   receiveObservation($event: any) {
     this.observation = $event;
+    console.log(this.observation);
+  }
+
+  receiveObservations($event: any) {
+    this.observations = $event;
+    console.log(this.observations);
   }
 
   receiveProducts($event: any) {
@@ -329,6 +336,7 @@ export class CreateBudgetComponent {
       client: this.client,
       project: this.project,
       observation: this.observation,
+      observations: this.observations,
       products: this.products,
       services: this.services,
       total: this.total_budget,

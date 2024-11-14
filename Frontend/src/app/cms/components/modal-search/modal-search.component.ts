@@ -15,6 +15,9 @@ import Swal from 'sweetalert2';
   encapsulation: ViewEncapsulation.None
 })
 export class ModalSearchComponent {
+  filterText: string = "";
+  filteredProducts: any = []; 
+
   selectedCategory: string = "1";
   selectedMaterial: string = "";
   selectedUnit: string = "";
@@ -26,12 +29,13 @@ export class ModalSearchComponent {
   
   products: any = [];
 
-  showTableHead: boolean = this.products.length > 0 ? true : false;
+  hideTable: boolean = true
 
   @Output() productSelected = new EventEmitter<any>();
 
   @Input() currency: number = 1;
 
+  isCarpentry: boolean = false;
 
   constructor(private productService: ProductsService) { }
 
@@ -42,6 +46,7 @@ export class ModalSearchComponent {
       
     }
   }
+
   onSubmit(form: any) {
     if (this.selectedCategory == "0" || this.selectedMaterial == "" || this.selectedUnit == "" || !this.cutTypes.CNC && !this.cutTypes.Liso || this.structure == "") {
       Swal.fire({
@@ -52,8 +57,6 @@ export class ModalSearchComponent {
       });
       return;
     }
-
-
 
     let dataSearch = {
       category: this.selectedCategory,
@@ -78,6 +81,43 @@ export class ModalSearchComponent {
       }
 
       this.products = data;
+      this.filteredProducts = data;
+      this.hideTable = false;
+    });
+
+  }
+
+  change_category() {
+    if (this.selectedCategory == '4') {
+      this.isCarpentry = true;
+    } else {
+      this.isCarpentry = false;
+    }
+  }
+
+  searchCarpentry() {
+    
+    let dataSearch = {
+      category: this.selectedCategory,
+    };
+
+    // Consultar productos suscribiendo al servicio getProducts
+    this.productService.searchProducts(dataSearch).subscribe((data: any) => {
+      //si no hay productos muestra mensaje
+      if (data.length == 0) {
+        Swal.fire({
+          title: '',
+          text: 'No se encontraron productos con los filtros seleccionados',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+
+      
+      this.products = data;
+      this.filteredProducts = data;
+      this.hideTable = false;
     });
 
   }
@@ -164,5 +204,13 @@ export class ModalSearchComponent {
     if (this.cutTypes.Liso) {
       this.cutTypes.CNC = false;
     }
+  }
+
+ //dependiendo del valor del modelo filterText, se filtra la tabla de productos encontrados
+  filterProducts() {
+    const filterWords = this.filterText.toLowerCase().split(' ');
+    this.filteredProducts = this.products.filter((product: any) => {
+      return filterWords.every(word => product.system_name.toLowerCase().includes(word));
+    });
   }
 }
